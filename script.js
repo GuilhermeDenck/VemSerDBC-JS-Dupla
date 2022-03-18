@@ -232,7 +232,7 @@ const validarLogin = async () => {
     if(validarSenha) {
       document.getElementById('email-input-login').value = '';
       document.getElementById('password-input-login').value = '';
-      listaVagas()
+      listaVagas();
       direcionarUser(user.tipo);
     } else {
       alert('Senha incorreta');
@@ -362,13 +362,11 @@ const maskRemunaracao = (input, value) => {
   }
 }
 
-
-
 const listaVagas = async() => {
   const CLASS_UL = "py-4 px-5 container";
-  const CLASS_LI = "d-flex p-3 w-100 border border-dark rounded align-items-center justify-content-between";
-  const CLASS_P = "m-0";
-  const CLASS_SPAN = "fw-bold";
+  const CLASS_LI = "d-flex p-3 mt-3 w-100 border border-dark rounded align-items-center justify-content-between";
+  const CLASS_SPAN = "m-0 fw-normal";
+  const CLASS_P = "fw-bold";
 
 
   const ulVagas = document.getElementById('lista-vagas');
@@ -376,30 +374,29 @@ const listaVagas = async() => {
     const response = await axios.get(`http://localhost:3000/vagas`);
     response.data.forEach( elemento => {
       const spanTitulo = document.createElement('span');
-      spanTitulo.textContent = "Titulo:";
+      spanTitulo.textContent = elemento.titulo;
       spanTitulo.setAttribute('class', CLASS_SPAN);
 
+      const pTitulo = document.createElement('p');
+      pTitulo.textContent = 'Titulo: ';
+      pTitulo.setAttribute('class', CLASS_P);
+      pTitulo.append(spanTitulo);
+
       const spanRemuneracao = document.createElement('span');
-      spanRemuneracao.textContent = "Remuneração:";
+      spanRemuneracao.textContent = elemento.remuneracao;
       spanRemuneracao.setAttribute('class', CLASS_SPAN);
 
-      const pTitulo = document.createElement('p');
-      let titulo = pTitulo.textContent = elemento.titulo;
-      pTitulo.append(spanTitulo, titulo)
-      pTitulo.setAttribute('class', CLASS_P);
-
       const pRemuneracao = document.createElement('p');
-      let remuneracao = pRemuneracao.textContent = elemento.remuneracao;
-      pRemuneracao.append(spanRemuneracao, remuneracao)
+      pRemuneracao.textContent = 'Remuneração: ';
       pRemuneracao.setAttribute('class', CLASS_P);
+      pRemuneracao.append(spanRemuneracao);
 
       const li = document.createElement('li');
-      li.append(pTitulo, pRemuneracao)
-      li.setAttribute('class', CLASS_LI)
+      li.append(pTitulo, pRemuneracao);
+      li.setAttribute('class', CLASS_LI);
 
-      ulVagas.appendChild(li)
-      ulVagas.setAttribute('class', CLASS_UL)
-      
+      ulVagas.appendChild(li);
+      ulVagas.setAttribute('class', CLASS_UL);
     })
     
   } catch (error) {
