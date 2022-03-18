@@ -1,6 +1,9 @@
 {
   "usuarios": [
-
+    {
+      "email": "teste@dbc.com",
+      "senha": "123"
+    }
   ],
   "candidaturas": [
 

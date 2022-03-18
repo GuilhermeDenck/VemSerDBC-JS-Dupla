@@ -45,3 +45,39 @@ class Vaga {
     this.candidatos = candidatos;
   }
 }
+
+const alternarClasses = (elemento, ...classes) => {
+  classes.forEach( classe => {
+    elemento.classList.toggle(classe);
+  });
+}
+
+const irPara = (origem, destino) => {
+  const elementoOrigem = document.getElementById(origem);
+  const elementoDestino = document.getElementById(destino);
+
+  alternarClasses(elementoOrigem, 'd-none', 'd-flex');
+  alternarClasses(elementoDestino, 'd-none', 'd-flex');
+}
+
+const validarLogin = async () => {	
+  const emailDigitado = document.getElementById('email-input-login').value;
+  const senhaDigitada = document.getElementById('password-input-login').value;
+  try {
+    const response = await axios.get(`http://localhost:3000/usuarios?email=${emailDigitado}`);
+
+    const user = response.data[0];
+
+    const validarSenha = user.senha === senhaDigitada;
+
+    if(validarSenha) {
+      irPara('login', 'home');
+    } else {
+      alert('Senha incorreta');
+    }
+  } catch (error) {
+    console.log('Email incorreto', error);
+    alert('Email incorreto');
+  }
+}
+
