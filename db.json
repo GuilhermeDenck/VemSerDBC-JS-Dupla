@@ -1,11 +1,14 @@
 {
   "usuarios": [
-
+    {
+      "id": 1,
+      "tipo": "trabalhador",
+      "nome": "Alisson Manica",
+      "dataNascimento": "22/03/2000",
+      "email": "alissonmanica@gmail.com",
+      "senha": "Manica@1234"
+    }
   ],
-  "candidaturas": [
-
-  ],
-  "vagas": [
-
-  ]
+  "candidaturas": [],
+  "vagas": []
 }
