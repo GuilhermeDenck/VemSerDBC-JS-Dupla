@@ -37,7 +37,7 @@
             <a href="#">Esqueceu a senha?</a>
           </li>
           <li class="d-flex">
-            <a href="#">Não possui cadastro?</a>
+            <a href="#" onclick="irPara('login', 'registration')">Não possui cadastro?</a>
           </li>
         </ul>
       </div>
@@ -78,8 +78,8 @@
       </div>
   
       <div class="py-3 px-5 w-100 d-flex justify-content-between">
-          <button type="button" onclick="irPara('registration', 'login')" class="py-1 px-4">Voltar</button>
-          <button type="button" id="register-btn" class="bg bg-dark text-light py-1 px-4" onclick="validarCadastro(event)">Cadastrar</button>
+          <button type="button" onclick="irPara('registration', 'login')" class="btn btn-dark py-1 px-4">Voltar</button>
+          <button type="button" id="register-btn" class="btn btn-dark py-1 px-4" onclick="validarCadastro(event)">Cadastrar</button>
       </div>
   </form>
   </div>
