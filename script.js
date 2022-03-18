@@ -247,9 +247,15 @@ const direcionarUser = (userTipo) => {
 
   switch (userTipo) {
     case 'trabalhador':
+      const ulVagas = document.getElementById('lista-vagas-trabalhador');
+      // ulVagas.textContent = ''
+      listaVagas(ulVagas)
       irPara('login', 'vagas-trabalhador');
       break;
     case 'recrutador':
+      const ulVagasRecrut = document.getElementById('lista-vagas-recrut');
+      // ulVagas.textContent = ''
+      listaVagas(ulVagasRecrut)
       irPara('login', 'vagas-recrutador');
       break;
     default:
@@ -364,14 +370,13 @@ const maskRemunaracao = (input, value) => {
 
 
 
-const listaVagas = async() => {
+const listaVagas = async(ul) => {
   const CLASS_UL = "py-4 px-5 container";
   const CLASS_LI = "d-flex p-3 w-100 border border-dark rounded align-items-center justify-content-between";
   const CLASS_P = "m-0";
   const CLASS_SPAN = "fw-bold";
 
 
-  const ulVagas = document.getElementById('lista-vagas');
   try {
     const response = await axios.get(`http://localhost:3000/vagas`);
     response.data.forEach( elemento => {
@@ -397,9 +402,8 @@ const listaVagas = async() => {
       li.append(pTitulo, pRemuneracao)
       li.setAttribute('class', CLASS_LI)
 
-      ulVagas.appendChild(li)
-      ulVagas.setAttribute('class', CLASS_UL)
-      
+      ul.appendChild(li)
+      ul.setAttribute('class', CLASS_UL)
     })
     
   } catch (error) {
