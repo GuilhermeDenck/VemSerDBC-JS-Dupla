@@ -19,14 +19,14 @@
       "id": 1,
       "titulo": "Teste",
       "descricao": "Vaga fullstack",
-      "remuneção": "5000.00",
+      "remuneracao": "5000.00",
       "candidatos": null
     },
     {
       "id": 2,
       "titulo": "Teste",
       "descricao": "Vaga fullstack",
-      "remuneção": "5000.00",
+      "remuneracao": "5000.00",
       "candidatos": []
     }
   ]

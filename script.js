@@ -34,14 +34,14 @@ class Vaga {
   id;
   titulo;
   descricao;
-  remuneção;
+  remuneracao;
   candidatos = [];
 
-  constructor(id, titulo, descricao, remuneção, candidatos) {
+  constructor(id, titulo, descricao, remuneracao, candidatos) {
     this.id = id;
     this.titulo = titulo;
     this.descricao = descricao;
-    this.remuneção = remuneção;
+    this.remuneracao = remuneracao;
     this.candidatos = candidatos;
   }
 }
@@ -225,6 +225,7 @@ const validarLogin = async () => {
     const validarSenha = user.senha === senhaDigitada;
 
     if(validarSenha) {
+      listaVagas()
       irPara('login', 'home');
     } else {
       alert('Senha incorreta');
@@ -340,5 +341,44 @@ const maskRemunaracao = (input, value) => {
 
 
 const listaVagas = async() => {
-  const ulVagas = document.getElementById('lista-vagas')
+  const CLASS_UL = "py-4 px-5 container";
+  const CLASS_LI = "d-flex p-3 w-100 border border-dark rounded align-items-center justify-content-between";
+  const CLASS_P = "m-0";
+  const CLASS_SPAN = "fw-bold";
+
+
+  const ulVagas = document.getElementById('lista-vagas');
+  try {
+    const response = await axios.get(`http://localhost:3000/vagas`);
+    response.data.forEach( elemento => {
+      const spanTitulo = document.createElement('span');
+      spanTitulo.textContent = "Titulo:";
+      spanTitulo.setAttribute('class', CLASS_SPAN);
+
+      const spanRemuneracao = document.createElement('span');
+      spanRemuneracao.textContent = "Remuneração:";
+      spanRemuneracao.setAttribute('class', CLASS_SPAN);
+
+      const pTitulo = document.createElement('p');
+      pTitulo.appendChild(spanTitulo)
+      pTitulo.textContent = response.data.titulo;
+      pTitulo.setAttribute('class', CLASS_P);
+
+      const pRemuneracao = document.createElement('p');
+      pRemuneracao.appendChild(spanRemuneracao)
+      pRemuneracao.textContent = response.data.remuneracao;
+      pRemuneracao.setAttribute('class', CLASS_P);
+
+      const li = document.createElement('li');
+      li.append(pTitulo, pRemuneracao)
+      li.setAttribute('class', CLASS_LI)
+
+      ulVagas.appendChild(li)
+      ulVagas.setAttribute('class', CLASS_UL)
+      
+    })
+    
+  } catch (error) {
+    
+  }
 }
