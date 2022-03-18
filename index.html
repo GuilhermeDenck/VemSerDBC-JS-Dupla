@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     <link rel="stylesheet" href="./styles.css">
 </head>
-<body style="height: 100vh;">
+<body style="height: 100vh">
   <div id="container" class="h-100 flex-column d-flex align-items-center justify-content-center">
     <div id="login" class="h-100 w-100 flex-column d-flex align-items-center justify-content-center">
       <form class="d-flex w-50 pb-3 border border-dark rounded flex-column align-items-center justify-content-center">
@@ -42,6 +42,46 @@
         </ul>
       </div>
     </div>
+
+    <form id="registration" class="w-50 pb-3 border border-dark rounded flex-column align-items-center justify-content-center d-none">
+      <div class="bg bg-dark w-100 h-100 text-center p-2 text-white">
+          <span>Cadastro</span>
+      </div>
+  
+      <div class="py-2 px-5 d-flex flex-column w-100">
+        <span>Tipo de Usuário</span>
+        <select name="user-type" id="user-type"></select>
+      </div>
+  
+      <div class="py-2 px-5 d-flex flex-column w-100">
+          <span>Nome Completo*</span>
+          <input id="nome-input" onkeyup="validarNome()">
+          <span id="nome-erro" class="d-none text-danger">Nome inválido</span>
+      </div>
+  
+      <div class="py-2 px-5 d-flex flex-column w-100">
+          <span>Data de Nascimento*</span>
+          <input id="date-input-registration" onkeyup="validarData()" maxlength="10">
+          <span id="date-registration-error" class="d-none">Data inválida</span>
+      </div>
+  
+      <div class="py-2 px-5 d-flex flex-column w-100">
+          <span>Email*</span>
+          <input id="email-input-registration" onkeyup="validarEmail()">
+          <span id="email-registration-error" class="d-none">Email inválido</span>
+      </div>
+  
+      <div class="py-2 px-5 d-flex flex-column w-100">
+          <span>Senha*</span>
+          <input id="password-input-registration" onkeyup="validarSenha()">
+          <span id="password-registration-error" class="d-none">Senha inválida</span>
+      </div>
+  
+      <div class="py-3 px-5 w-100 d-flex justify-content-between">
+          <button type="button" onclick="irPara('registration', 'login')" class="py-1 px-4">Voltar</button>
+          <button type="button" id="register-btn" class="bg bg-dark text-light py-1 px-4" onclick="validarCadastro(event)">Cadastrar</button>
+      </div>
+  </form>
   </div>
   
   <script src="./node_modules/axios/dist/axios.min.js"></script>
