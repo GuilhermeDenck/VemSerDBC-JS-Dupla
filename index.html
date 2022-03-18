@@ -11,7 +11,7 @@
 </head>
 <body style="height: 100vh">
   <div id="container" class="h-100 flex-column d-flex align-items-center justify-content-center">
-    <div id="login" class="h-100 w-100 flex-column d-flex align-items-center justify-content-center">
+    <div id="login" class="h-100 w-100 flex-column d-none align-items-center justify-content-center"> <!-- botar d-flex -->
       <form class="d-flex w-50 pb-3 border border-dark rounded flex-column align-items-center justify-content-center">
           <div class="bg bg-dark w-100 h-100 text-center p-2 text-white">
               <span>Login do Sistema</span>
@@ -34,7 +34,7 @@
       <div id="ajuda" class="d-flex w-100 justify-content-center pt-2">
         <ul class="d-flex justify-content-between w-50 p-0">
           <li class="d-flex">
-            <a href="#">Esqueceu a senha?</a>
+            <a href="#" onclick="esqueceuSenha()">Esqueceu a senha?</a>
           </li>
           <li class="d-flex">
             <a href="#" onclick="irPara('login', 'registration')">Não possui cadastro?</a>
@@ -49,7 +49,7 @@
       </div>
   
       <div class="py-2 px-5 d-flex flex-column w-100">
-        <span>Tipo de Usuário</span>
+        <span>Tipo de Usuário <span class="text-danger">*</span></span>
         <select name="user-type" id="user-type">
           <option value="trabalhador">Trabalhador</option>
           <option value="recrutador">Recrutador</option>
@@ -57,34 +57,64 @@
       </div>
   
       <div class="py-2 px-5 d-flex flex-column w-100">
-          <span>Nome Completo*</span>
+          <span>Nome Completo <span class="text-danger">*</span></span>
           <input id="nome-input" onkeyup="validarNome()">
           <span id="nome-erro" class="d-none text-danger">Nome inválido</span>
       </div>
   
       <div class="py-2 px-5 d-flex flex-column w-100">
-          <span>Data de Nascimento*</span>
+          <span>Data de Nascimento <span class="text-danger">*</span></span>
           <input id="date-input-registration" onkeyup="validarData()" maxlength="10">
           <span id="date-registration-error" class="d-none">Data inválida</span>
       </div>
   
       <div class="py-2 px-5 d-flex flex-column w-100">
-          <span>Email*</span>
+          <span>Email <span class="text-danger">*</span></span>
           <input id="email-input-registration" onkeyup="validarEmail()">
           <span id="email-registration-error" class="d-none">Email inválido</span>
       </div>
   
       <div class="py-2 px-5 d-flex flex-column w-100">
-          <span>Senha*</span>
+          <span>Senha <span class="text-danger">*</span></span>
           <input id="password-input-registration" onkeyup="validarSenha()">
           <span id="password-registration-error" class="d-none">Senha inválida</span>
       </div>
   
       <div class="py-3 px-5 w-100 d-flex justify-content-between">
-          <button type="button" onclick="irPara('registration', 'login')" class="btn btn-dark py-1 px-4">Voltar</button>
+          <button type="button" onclick="irPara('registration', 'login')" class="btn btn-secondary py-1 px-4">Voltar</button>
           <button type="button" id="register-btn" class="btn btn-dark py-1 px-4" onclick="validarCadastro(event)">Cadastrar</button>
       </div>
-  </form>
+    </form>
+
+    <form id="registrationVagas" class="w-50 pb-3 border border-dark rounded flex-column align-items-center justify-content-center d-flex">
+      <div class="bg bg-dark w-100 text-center p-2 text-white">
+          <span>Cadastro de Vagas</span>
+      </div>
+  
+      <div class="py-2 px-5 d-flex flex-column w-100">
+          <span>Título <span class="text-danger">*</span></span>
+          <input id="titulo-input-registration" onkeyup="validarTitulo()">
+          <span id="titulo-erro-registration" class="d-none text-danger">Título inválido</span>
+      </div>
+  
+      <div class="py-2 px-5 d-flex flex-column w-100">
+          <span>Descrição <span class="text-danger">*</span></span>
+          <input id="descricao-input-registration" onkeyup="validarDescricao()">
+          <span id="descricao-erro-registration" class="d-none text-danger">Descrição inválida</span>
+      </div>
+  
+      <div class="py-2 px-5 d-flex flex-column w-100">
+          <span>Remuneração <span class="text-danger">*</span></span>
+          <input id="remuneracao-input-registration" onkeyup="validarRemuneracao()">
+          <span id="remuneracao-registration-error" class="d-none text-danger">Remuneração inválido</span>
+      </div>
+  
+      <div class="py-3 px-5 w-100 d-flex justify-content-between">
+          <button type="button" onclick="irPara('registrationVagas', 'home')" class="btn btn-secondary py-1 px-4">Voltar</button>
+          <button type="button" id="register-vaga-btn" class="btn btn-dark py-1 px-4" onclick="validarCadastroVaga(event)">Cadastrar</button>
+      </div>
+    </form>
+
   </div>
   
   <script src="./node_modules/axios/dist/axios.min.js"></script>
