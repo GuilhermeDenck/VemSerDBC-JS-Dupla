@@ -47,121 +47,7 @@ class Vaga {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //#region VALIDAR NOME
-function capitalize(texto) {
-  let textoMinusculo = texto.toLowerCase();
-  let separarLetras = textoMinusculo.split(" ");
-  for (let i = 0; i < separarLetras.length; i++) {
-    let corte = separarLetras[i];
-    let primeiraLetra = corte[0];
-    corte = primeiraLetra.toUpperCase() + corte.slice(1);
-
-    separarLetras[i] = corte;
-  }
-  return separarLetras.join(" ");
-}
-
 
 const validarNome = () => {
   const nomeInput = document.getElementById('nome-input');
@@ -290,7 +176,6 @@ const alternarClasses = (elemento, ...classes) => {
   });
 }
 
-
 const irPara = (origem, destino) => {
   const elementoOrigem = document.getElementById(origem);
   const elementoDestino = document.getElementById(destino);
@@ -318,7 +203,7 @@ const cadastrarUsuario = async (event) => {
   const campoData = document.getElementById("date-input-registration").value;
   const campoEmail = document.getElementById("email-input-registration").value;
   const campoSenha = document.getElementById("password-input-registration").value;
-  const nomeFormatado = capitalize(campoNome)
+  const nomeFormatado = campoNome.split(' ').map( nome => nome.charAt(0).toUpperCase() + nome.slice(1).toLowerCase() ).join(' ');
   const usuario = new Usuario (null, campoTipo, nomeFormatado, campoData, campoEmail, campoSenha);
   try {
     const response = await axios.post(`http://localhost:3000/usuarios`, usuario);
@@ -329,3 +214,24 @@ const cadastrarUsuario = async (event) => {
     console.log(`${erro}, Ops, algo deu errado, por favor aguarde!`)
   }
 }
+const validarLogin = async () => {	
+  const emailDigitado = document.getElementById('email-input-login').value;
+  const senhaDigitada = document.getElementById('password-input-login').value;
+  try {
+    const response = await axios.get(`http://localhost:3000/usuarios?email=${emailDigitado}`);
+
+    const user = response.data[0];
+
+    const validarSenha = user.senha === senhaDigitada;
+
+    if(validarSenha) {
+      irPara('login', 'home');
+    } else {
+      alert('Senha incorreta');
+    }
+  } catch (error) {
+    console.log('Email incorreto', error);
+    alert('Email incorreto');
+  }
+}
+

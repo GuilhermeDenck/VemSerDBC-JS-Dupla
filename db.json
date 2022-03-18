@@ -7,6 +7,10 @@
       "dataNascimento": "22/03/2000",
       "email": "alissonmanica@gmail.com",
       "senha": "Manica@1234"
+    },
+    {
+      "email": "teste@dbc.com",
+      "senha": "123"
     }
   ],
   "candidaturas": [],
