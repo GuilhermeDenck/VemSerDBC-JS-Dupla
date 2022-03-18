@@ -236,88 +236,109 @@ const validarLogin = async () => {
 }
 
 
+  
+const esqueceuSenha = async () => {
+  try {
+    const email = prompt('Digite seu e-mail');
+    alert('Pesquisando aguarde...');
+    const response = await axios.get(`http://localhost:3000/usuarios?email=${email}`);
 
+    const senhaRecuparada = response.data[0].senha;
 
+    alert(`Sua senha é: ${senhaRecuparada}`);
+  } catch (error) {
+    alert('Email não encontrado');
+  }
+}
 
+const validarCadastroVaga = async (event) => {
 
+  const cadastroValido = validarTitulo() && validarDescricao() && validarRemuneracao();
 
+  try {
+    if(cadastroValido) {
+      const titulo = document.getElementById('titulo-input-registration').value;
+      const descricao = document.getElementById('descricao-input-registration').value;
+      const remuneracao = document.getElementById('remuneracao-input-registration').value;
 
+      const vaga = new Vaga(null, titulo, descricao, remuneracao, []);
 
+      const response = await axios.post(`http://localhost:3000/vagas`, vaga);
+      let idVaga = response.data.id;
+      vaga.id = idVaga;
 
+      alert('Vaga cadastrada com sucesso!');
+    } else {
+      alert('Erro! Confira os campos de cadastro!');
+    }
+  } catch (error) {
+    alert('Erro ao cadastrar vaga');
+  }
 
+}
 
+const validarTitulo = () => {
+  const titulo = document.getElementById('titulo-input-registration').value;
+  const errorTitulo = document.getElementById('titulo-erro-registration');
+  const tituloSplit = [...titulo];
 
+  const valid =  tituloSplit.length >= 5;
 
+  valid ? errorTitulo.classList.add('d-none') : errorTitulo.classList.remove('d-none');
 
+  return valid;
+}
 
+const validarDescricao = () => {
+  const descricao = document.getElementById('descricao-input-registration').value;
+  const errordescricao = document.getElementById('descricao-erro-registration');
+  const descricaoSplit = [...descricao];
 
+  const valid =  descricaoSplit.length >= 5;
 
+  valid ? errordescricao.classList.add('d-none') : errordescricao.classList.remove('d-none');
 
+  return valid;
+}
 
+const validarRemuneracao = () => {
+  const inputRemuneracao = document.getElementById('remuneracao-input-registration');
+  const remuneracao = document.getElementById('remuneracao-input-registration').value;
 
 
+  const errorremuneracao = document.getElementById('remuneracao-registration-error');
+  maskRemunaracao(inputRemuneracao, remuneracao);
 
+  const remuneracaoSplit = [...remuneracao];
 
+  const valid =  remuneracaoSplit.length >= 2 && !isNaN(remuneracao);
 
+  valid ? errorremuneracao.classList.add('d-none') : errorremuneracao.classList.remove('d-none');
+  
 
+  return valid;
 
+}
 
+const maskRemunaracao = (input, value) => {
+  let listaCaracteres = [...value];
+  
+  let listaFiltrada = listaCaracteres.filter(c => !isNaN(parseInt(c)));
+  if(listaFiltrada && listaFiltrada.length) {
+      let dataDigitada = listaFiltrada.join('');
 
+      const { length } = dataDigitada;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+      switch(length) { 
+          case 0: case 1: case 2:
+              input.value = `R$ ${dataDigitada}`; 
+              break;
+      }
+  }
+}
 
 
 
 const listaVagas = async() => {
   const ulVagas = document.getElementById('lista-vagas')
-  
 }
