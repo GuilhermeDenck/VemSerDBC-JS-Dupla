@@ -195,7 +195,6 @@ const validarCadastro = (event) => {
   }
 }
 
-
 const cadastrarUsuario = async (event) => {
   event.preventDefault();
   const campoTipo = document.getElementById('user-type').value
@@ -209,11 +208,18 @@ const cadastrarUsuario = async (event) => {
     const response = await axios.post(`http://localhost:3000/usuarios`, usuario);
     let idUser = response.data.id;
     usuario.id = idUser;
+
+    document.getElementById('user-type').value = '';
+    document.getElementById("nome-input").value = '';
+    document.getElementById("date-input-registration").value = '';
+    document.getElementById("email-input-registration").value = '';
+    document.getElementById("password-input-registration").value = '';
     
   } catch (error) {
-    console.log(`${erro}, Ops, algo deu errado, por favor aguarde!`)
+    console.log(`${error}, Ops, algo deu errado, por favor aguarde!`)
   }
 }
+
 const validarLogin = async () => {	
   const emailDigitado = document.getElementById('email-input-login').value;
   const senhaDigitada = document.getElementById('password-input-login').value;
@@ -223,9 +229,10 @@ const validarLogin = async () => {
     const user = response.data[0];
 
     const validarSenha = user.senha === senhaDigitada;
-
     if(validarSenha) {
-      irPara('login', 'home');
+      document.getElementById('email-input-login').value = '';
+      document.getElementById('password-input-login').value = '';
+      direcionarUser(user.tipo);
     } else {
       alert('Senha incorreta');
     }
@@ -235,8 +242,22 @@ const validarLogin = async () => {
   }
 }
 
+const direcionarUser = (userTipo) => {
 
+  switch (userTipo) {
+    case 'trabalhador':
+      irPara('login', 'vagas-trabalhador');
+      break;
+    case 'recrutador':
+      irPara('login', 'vagas-recrutador');
+      break;
+    default:
+      alert('Tipo de usuário não encontrado');
+      break;
+  }
   
+}
+
 const esqueceuSenha = async () => {
   try {
     const email = prompt('Digite seu e-mail');
@@ -266,8 +287,11 @@ const validarCadastroVaga = async (event) => {
       const response = await axios.post(`http://localhost:3000/vagas`, vaga);
       let idVaga = response.data.id;
       vaga.id = idVaga;
-
       alert('Vaga cadastrada com sucesso!');
+
+      document.getElementById('titulo-input-registration').value = '';
+      document.getElementById('descricao-input-registration').value = '';
+      document.getElementById('remuneracao-input-registration').value = '';
     } else {
       alert('Erro! Confira os campos de cadastro!');
     }
