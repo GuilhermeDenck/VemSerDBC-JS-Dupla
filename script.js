@@ -371,55 +371,6 @@ const maskRemunaracao = (input, value) => {
   }
 }
 
-let idDetalhe;
-const abrirDetalhes = async (event) => {
-  idDetalhe = event.target.id;
-  try {
-    const response = await axios.get(`http://localhost:3000/vagas?id=${idDetalhe}`);
-    const vaga = response.data[0];
-    const { id, titulo, descricao, remuneracao, candidatos } = vaga;
-
-    console.log(USER_LOGADO.tipo)
-    if (USER_LOGADO.tipo === "trabalhador") {
-      irPara('vagas-trabalhador', 'detalhe-vagas');
-    } else if (USER_LOGADO.tipo === "recrutador") {
-      irPara('vagas-recrutador', 'detalhe-vagas-recrut');
-
-    }
-    
-
-    const spanTituloVaga = document.getElementById('span-titulo-vaga');
-    spanTituloVaga.textContent = vaga.titulo;
-
-    const spanDescricaoVaga = document.getElementById('span-descricao-vaga');
-    spanDescricaoVaga.textContent = vaga.descricao;
-
-    const spanRemuneracaoVaga = document.getElementById('span-remuneracao-vaga');
-    spanRemuneracaoVaga.textContent = vaga.remuneracao;
-
-    const STYLE_LI_CANDITADOS = "d-flex justify-content-between border border-dark py-2 ps-2 pe-4";
-    const STYLE_SPAN_DATA = "pe-3";
-
-    const ul = document.getElementById('lista-candidatos-vaga');
-    ul.textContent = ''
-    vaga.candidatos.forEach(candidato => {
-      const spanNome = document.createElement('span');
-      const spanDataNacimento = document.createElement('span');
-      const li = document.createElement('li');
-
-
-      spanNome.textContent = candidato.nome;
-      spanDataNacimento.textContent = candidato.dataNascimento;
-      spanDataNacimento.setAttribute('class', STYLE_SPAN_DATA);
-      li.append(spanNome, spanDataNacimento);
-      li.setAttribute('class', STYLE_LI_CANDITADOS);
-      ul.appendChild(li);
-    })
-  } catch (error) {
-    console.log('Erro ao carregar detalhes da vaga');
-  }
-}
-
 const listaVagas = async(ul) => {
   const CLASS_UL = "py-4 px-5 container";
   const CLASS_BUTTON = "d-flex p-3 w-100 border border-dark rounded align-items-center justify-content-between btn-hover-vagas"
@@ -470,7 +421,93 @@ const listaVagas = async(ul) => {
   }
 }
 
+let idDetalhe;
+const abrirDetalhes = async (event) => {
+  idDetalhe = event.target.id;
+  try {
+    const response = await axios.get(`http://localhost:3000/vagas?id=${idDetalhe}`);
+    const vaga = response.data[0];
+    const { id, titulo, descricao, remuneracao, candidatos } = vaga;
 
+    if (USER_LOGADO.tipo === "trabalhador") {
+      irPara('vagas-trabalhador', 'detalhe-vagas');
+    }
+    if (USER_LOGADO.tipo === "recrutador") {
+      irPara('vagas-recrutador', 'detalhe-vagas-recrut');
+    }
+    
+    if(USER_LOGADO === "trabalhador") {
+      const spanTituloVaga = document.getElementById('span-titulo-vaga');
+      spanTituloVaga.textContent = vaga.titulo;
+  
+      const spanDescricaoVaga = document.getElementById('span-descricao-vaga');
+      spanDescricaoVaga.textContent = vaga.descricao;
+  
+      const spanRemuneracaoVaga = document.getElementById('span-remuneracao-vaga');
+      spanRemuneracaoVaga.textContent = vaga.remuneracao;
+  
+      const STYLE_LI_CANDITADOS = "d-flex justify-content-between border border-dark py-2 ps-2 pe-4";
+      const STYLE_SPAN_DATA = "pe-3";
+  
+      const ul = document.getElementById('lista-candidatos-vaga');
+      ul.textContent = '';
+  
+      vaga.candidatos.forEach(candidato => {
+        const spanNome = document.createElement('span');
+        const spanDataNacimento = document.createElement('span');
+        const li = document.createElement('li');
+
+        spanNome.textContent = candidato.nome;
+        spanDataNacimento.textContent = candidato.dataNascimento;
+        spanDataNacimento.setAttribute('class', STYLE_SPAN_DATA);
+        li.append(spanNome, spanDataNacimento);
+        li.setAttribute('class', STYLE_LI_CANDITADOS);
+        ul.appendChild(li);
+      });
+    }
+
+    if(USER_LOGADO.tipo === 'recrutador') {
+      const spanTituloVaga = document.getElementById('span-titulo-vaga-recrutador');
+      spanTituloVaga.textContent = vaga.titulo;
+  
+      const spanDescricaoVaga = document.getElementById('span-descricao-vaga-recrutador');
+      spanDescricaoVaga.textContent = vaga.descricao;
+  
+      const spanRemuneracaoVaga = document.getElementById('span-remuneracao-vaga-recrutador');
+      spanRemuneracaoVaga.textContent = vaga.remuneracao;
+  
+      const STYLE_LI_CANDITADOS = "d-flex justify-content-between border border-dark py-2 ps-2 pe-4";
+      const STYLE_SPAN_DATA = "pe-3";
+  
+      const ul = document.getElementById('lista-candidatos-vaga-recrutador');
+      ul.textContent = '';
+
+      const STYLE_BTN_REPROVAR = "btn btn-danger";
+      vaga.candidatos.forEach(candidato => {
+        const spanNome = document.createElement('span');
+        const spanDataNacimento = document.createElement('span');
+        const btnReprovar = document.createElement('button');
+        const li = document.createElement('li');
+        btnReprovar.setAttribute('class', STYLE_BTN_REPROVAR);
+        btnReprovar.textContent = 'Reprovar';
+        btnReprovar.setAttribute('onclick', 'reprovarCandidato(id)');
+        
+
+        spanNome.textContent = candidato.nome;
+        spanDataNacimento.textContent = candidato.dataNascimento;
+        spanDataNacimento.setAttribute('class', STYLE_SPAN_DATA);
+        li.append(spanNome, spanDataNacimento, btnReprovar);
+        li.setAttribute('class', STYLE_LI_CANDITADOS);
+        
+        console.log(candidato.candidaturas);
+        //setar id para Li para poder reprovar o cara li.setAttribute('id', );
+        ul.appendChild(li);
+      })
+    }
+  } catch (error) {
+    console.log('Erro ao carregar detalhes da vaga', error);
+  }
+}
 
 
 
@@ -551,4 +588,8 @@ const getVagaById = (idVaga) => {
     console.log(`Erro ao buscar vaga: ${error}`);
   }
 
+}
+
+const reprovarCandidato = () => {
+  console.log('teste reprovar')
 }

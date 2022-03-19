@@ -32,24 +32,6 @@
       "idCandidato": 1,
       "reprovado": false,
       "id": 1
-    },
-    {
-      "idVaga": "1",
-      "idCandidato": 1,
-      "reprovado": false,
-      "id": 2
-    },
-    {
-      "idVaga": "3",
-      "idCandidato": 1,
-      "reprovado": false,
-      "id": 3
-    },
-    {
-      "idVaga": "1",
-      "idCandidato": 1,
-      "reprovado": false,
-      "id": 4
     }
   ],
   "vagas": [
