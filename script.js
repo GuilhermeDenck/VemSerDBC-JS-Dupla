@@ -1,3 +1,4 @@
+let USER_LOGADO;
 class Usuario {
   id;
   tipo;
@@ -16,6 +17,7 @@ class Usuario {
     this.senha = senha;
     this.candidaturas = candidaturas;
   }
+
 }
 
 class Candidaturas {
@@ -201,7 +203,7 @@ const cadastrarUsuario = async () => {
   const campoEmail = document.getElementById("email-input-registration").value;
   const campoSenha = document.getElementById("password-input-registration").value;
   const nomeFormatado = campoNome.split(' ').map( nome => nome.charAt(0).toUpperCase() + nome.slice(1).toLowerCase() ).join(' ');
-  const usuario = new Usuario (null, campoTipo, nomeFormatado, campoData, campoEmail, campoSenha);
+  const usuario = new Usuario (null, campoTipo, nomeFormatado, campoData, campoEmail, campoSenha, []);
   try {
     const response = await axios.post(`http://localhost:3000/usuarios`, usuario);
     let idUser = response.data.id;
@@ -228,6 +230,7 @@ const validarLogin = async () => {
 
     const validarSenha = user.senha === senhaDigitada;
     if(validarSenha) {
+      USER_LOGADO = user;
       document.getElementById('email-input-login').value = '';
       document.getElementById('password-input-login').value = '';
       listaVagas();
@@ -368,15 +371,42 @@ const maskRemunaracao = (input, value) => {
   }
 }
 
+let idDetalhe;
 const abrirDetalhes = async (event) => {
-  const idDetalhe = event.target.id
+  idDetalhe = event.target.id;
   try {
     const response = await axios.get(`http://localhost:3000/vagas?id=${idDetalhe}`);
     const vaga = response.data[0];
     const { id, titulo, descricao, remuneracao, candidatos } = vaga;
-    console.log(vaga);
+
+    irPara('vagas-trabalhador', 'detalhe-vagas');
+
+    const spanTituloVaga = document.getElementById('span-titulo-vaga');
+    spanTituloVaga.textContent = vaga.titulo;
+
+    const spanDescricaoVaga = document.getElementById('span-descricao-vaga');
+    spanDescricaoVaga.textContent = vaga.descricao;
+
+    const spanRemuneracaoVaga = document.getElementById('span-remuneracao-vaga');
+    spanRemuneracaoVaga.textContent = vaga.remuneracao;
+
+    const STYLE_LI_CANDITADOS = "d-flex justify-content-between border border-dark py-2 ps-2 pe-4";
+    const STYLE_SPAN_DATA = "pe-3";
+    vaga.candidatos.forEach(candidato => {
+      const ul = document.getElementById('lista-candidatos-vaga');
+      const spanNome = document.createElement('span');
+      const spanDataNacimento = document.createElement('span');
+      const li = document.createElement('li');
+
+      spanNome.textContent = candidato.nome;
+      spanDataNacimento.textContent = candidato.dataNascimento;
+      spanDataNacimento.setAttribute('class', STYLE_SPAN_DATA);
+      li.append(spanNome, spanDataNacimento);
+      li.setAttribute('class', STYLE_LI_CANDITADOS);
+      ul.appendChild(li);
+    })
   } catch (error) {
-    
+    console.log('Erro ao carregar detalhes da vaga');
   }
 }
 
@@ -434,36 +464,81 @@ const listaVagas = async(ul) => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 const reprovaCandidato = () => {
   const botaoCandidato = document.getElementById('candidato-1')
   botaoCandidato.disable
+}
+
+
+const candidatarVaga = async () => {
+  try {
+    
+    const responsePostCandidatura = await adicionarCandidatura();
+
+    const adicionarCandidaturaUsuario = await adicionarNoUsuario(responsePostCandidatura.data);
+
+    const adicionarCandidatoNasVagas = await adicionarUserNasVagas();
+    
+
+  } catch (error) {
+    console.log(`Erro ao candidatar vaga: ${error}`);
+  }
+}
+
+const adicionarCandidatura = async () => {
+  const candidaturas = new Candidaturas(idDetalhe, USER_LOGADO.id, false);
+  try {
+    const responsePostCandidatura = await axios.post('http://localhost:3000/candidaturas', candidaturas);
+    return responsePostCandidatura;
+  } catch (error) {
+    console.log(`Erro ao adicionar candidatura: ${error}`);
+  }
+}
+
+const adicionarNoUsuario = async (objCandidatura) => {
+  try {
+    const UserAlterado = {
+      id: USER_LOGADO.id,
+      tipo: USER_LOGADO.tipo,
+      nome: USER_LOGADO.nome,
+      dataNascimento: USER_LOGADO.dataNascimento,
+      email: USER_LOGADO.email,
+      senha: USER_LOGADO.senha,
+      candidaturas: [objCandidatura]
+    }
+
+    const response = await axios.put(`http://localhost:3000/usuarios/${USER_LOGADO.id}`, UserAlterado);
+    return response
+  } catch (error) {
+    console.log(`Erro ao adicionar candidatura no usuario: ${error}`);
+  }
+}
+
+const adicionarUserNasVagas = async () => {
+  try {
+    let vaga = await getVagaById(idDetalhe);
+    const { id, titulo, descricao, remuneracao, candidatos } = vaga.data;
+    const vagaAlterada = {
+      id: id,
+      titulo: titulo,
+      descricao: descricao,
+      remuneracao: remuneracao,
+      candidatos: [USER_LOGADO]
+    }
+    const response = await axios.put(`http://localhost:3000/vagas/${id}`, vagaAlterada);
+    console.log(response);
+    return response;
+  } catch (error) {
+    
+  }
+}
+
+const getVagaById = (idVaga) => {
+  try {
+    const response = axios.get(`http://localhost:3000/vagas/${idVaga}`);
+    return response;
+  } catch (error) {
+    console.log(`Erro ao buscar vaga: ${error}`);
+  }
+
 }
