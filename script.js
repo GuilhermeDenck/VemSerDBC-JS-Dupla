@@ -372,8 +372,9 @@ const maskRemunaracao = (input, value) => {
 
 
 
-const abrirDetalhes = () => {
-  console.log('ola')
+const abrirDetalhes = (event) => {
+  const idDetalhe = event.target.id
+  console.log(idDetalhe)
 }
 
 
@@ -419,18 +420,21 @@ const listaVagas = async(ul) => {
       pRemuneracao.setAttribute('class', CLASS_P);
       pRemuneracao.append(spanRemuneracao);
 
-      const button = document.createElement('button')
-      button.setAttribute('class', CLASS_BUTTON)
-      button.setAttribute('style', STYLE_BUTTON)
-      button.setAttribute('onclick', 'abrirDetalhes()')
+      const button = document.createElement('button');
+      const idVaga = elemento.id;
+      button.setAttribute('id', idVaga)
+      button.setAttribute('class', CLASS_BUTTON);
+      button.setAttribute('style', STYLE_BUTTON);
+      button.setAttribute('onclick', 'abrirDetalhes(event)');
       button.append(pTitulo, pRemuneracao);
+
 
       const li = document.createElement('li');
       li.appendChild(button);
       li.setAttribute('class', 'mt-3');
 
-      ul.appendChild(li)
-      ul.setAttribute('class', CLASS_UL)
+      ul.appendChild(li);
+      ul.setAttribute('class', CLASS_UL);
     })
     
   } catch (error) {
