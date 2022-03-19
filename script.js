@@ -176,7 +176,7 @@ const alternarClasses = (elemento, ...classes) => {
   });
 }
 
-const irPara = (event, origem, destino) => {
+const irPara = (origem, destino) => {
   const elementoOrigem = document.getElementById(origem);
   const elementoDestino = document.getElementById(destino);
 
@@ -185,7 +185,6 @@ const irPara = (event, origem, destino) => {
 }
 
 const validarCadastro = (event) => {
-  event.preventDefault()
   let cadastroValido = validarData() && validarEmail() && validarSenha() && validarNome();
   cadastroValido ? alert('Cadastro realizado com sucesso!') : alert('Erro! Confira os campos de cadastro!');
 
@@ -195,7 +194,7 @@ const validarCadastro = (event) => {
   }
 }
 
-const cadastrarUsuario = async (event) => {
+const cadastrarUsuario = async () => {
   const campoTipo = document.getElementById('user-type').value
   const campoNome = document.getElementById("nome-input").value;
   const campoData = document.getElementById("date-input-registration").value;
@@ -242,7 +241,7 @@ const validarLogin = async () => {
   }
 }
 
-const direcionarUser = (event, userTipo) => {
+const direcionarUser = (userTipo) => {
   switch (userTipo) {
     case 'trabalhador':
       const ulVagas = document.getElementById('lista-vagas-trabalhador');

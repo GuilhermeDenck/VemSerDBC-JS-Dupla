@@ -19,6 +19,14 @@
     {
       "email": "teste@dbc.com",
       "senha": "123"
+    },
+    {
+      "id": 3,
+      "tipo": "recrutador",
+      "nome": "Alisson Manica",
+      "dataNascimento": "22/03/2000",
+      "email": "alissonmanica@hotmail.com",
+      "senha": "Alisson@123"
     }
   ],
   "candidaturas": [],
@@ -49,6 +57,13 @@
       "titulo": "teste",
       "descricao": "teste",
       "remuneracao": "1232132131",
+      "candidatos": []
+    },
+    {
+      "id": 5,
+      "titulo": "JavaScript DOM",
+      "descricao": "aprendendo dom",
+      "remuneracao": "R$ 800",
       "candidatos": []
     }
   ]
