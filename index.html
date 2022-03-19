@@ -109,7 +109,7 @@
       </div>
   
       <div class="py-3 px-5 w-100 d-flex justify-content-between">
-          <button type="button" onclick="irPara('registrationVagas', 'vagas-recrutador')" class="btn btn-secondary py-1 px-4">Voltar</button>
+          <button type="button" class="btn btn-secondary py-1 px-4" onclick="irPara('registrationVagas', 'vagas-recrutador')">Voltar</button>
           <button type="button" id="register-vaga-btn" class="btn btn-dark py-1 px-4" onclick="validarCadastroVaga(event)">Cadastrar</button>
       </div>
     </form>
@@ -180,7 +180,7 @@
         </div>
         <div class="w-50 text-center pt-3">
           <span class="fs-3">Candidatos na Vaga</span>
-          <ul class="border border-dark w-100 p-0 mt-3">
+          <ul id="lista-candidatos-vaga" class="border border-dark w-100 p-0 mt-3">
             <div class="bg bg-dark w-100 d-flex justify-content-between py-2 px-3 text-light ">
               <span>Nome</span>
               <span class="me-5">Data de Nascimento</span>
@@ -203,8 +203,8 @@
             </li>
           </ul>
           <div class="py-3 w-100 d-flex justify-content-between">
-            <button type="button" onclick="irPara('detalhe-vagas', 'vagas-trabalhador')" class="btn btn-secondary py-1 px-4">Voltar</button>
-            <button type="button" id="btn-candidatar" class="btn btn-dark py-1 px-4" onclick="">Candidatar-se</button>
+            <button type="button" onclick="irPara('detalhe-vagas-recrut', 'vagas-recrutador')" class="btn btn-secondary py-1 px-4">Voltar</button>
+            <button type="button" id="btn-candidatar" class="btn btn-dark py-1 px-4" onclick="">Excluir vaga</button>
           </div>
         </div>
       </div>

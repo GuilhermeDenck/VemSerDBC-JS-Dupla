@@ -379,7 +379,14 @@ const abrirDetalhes = async (event) => {
     const vaga = response.data[0];
     const { id, titulo, descricao, remuneracao, candidatos } = vaga;
 
-    irPara('vagas-trabalhador', 'detalhe-vagas');
+    console.log(USER_LOGADO.tipo)
+    if (USER_LOGADO.tipo === "trabalhador") {
+      irPara('vagas-trabalhador', 'detalhe-vagas');
+    } else if (USER_LOGADO.tipo === "recrutador") {
+      irPara('vagas-recrutador', 'detalhe-vagas-recrut');
+
+    }
+    
 
     const spanTituloVaga = document.getElementById('span-titulo-vaga');
     spanTituloVaga.textContent = vaga.titulo;
@@ -392,11 +399,14 @@ const abrirDetalhes = async (event) => {
 
     const STYLE_LI_CANDITADOS = "d-flex justify-content-between border border-dark py-2 ps-2 pe-4";
     const STYLE_SPAN_DATA = "pe-3";
+
+    const ul = document.getElementById('lista-candidatos-vaga');
+    ul.textContent = ''
     vaga.candidatos.forEach(candidato => {
-      const ul = document.getElementById('lista-candidatos-vaga');
       const spanNome = document.createElement('span');
       const spanDataNacimento = document.createElement('span');
       const li = document.createElement('li');
+
 
       spanNome.textContent = candidato.nome;
       spanDataNacimento.textContent = candidato.dataNascimento;
