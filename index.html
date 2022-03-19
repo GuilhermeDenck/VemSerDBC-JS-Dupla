@@ -139,54 +139,34 @@
       </div>
     </div>
 
-    <div id="detalhe-vagas" class="d-none container border border-dark rounded p-0">
+    <div id="detalhe-vagas" class="d-none container flex-column border border-dark rounded p-0">
       <div class="bg bg-dark w-100 text-center p-1 text-white">
         <span>DETALHE DA VAGA</span>
       </div>
       <div class="container d-flex flex-column align-items-center mt-3">
         <div class="border border-dark rounded w-50 p-3">
-          <p class="fw-bold">Titulo:<span class="fw-normal p-2">Desenvolvedor Full-Stack</span></p>
-            <p class="fw-bold">Descrição<span class="fw-normal p-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum doloribus odio, fugit illo qui dolore praesentium laboriosam ab impedit ipsam ipsa, sapiente minus doloremque. Aperiam nisi animi dicta porro laborum.</span></p>
-            <p class="fw-bold">Remuneração:<span class="fw-normal p-2">R$ 5.500,00</span></p>
+          <p class="fw-bold">Titulo:<span id="span-titulo-vaga" class="fw-normal p-2"></span></p>
+            <p class="fw-bold">Descrição<span id="span-descricao-vaga" class="fw-normal p-2"></span></p>
+            <p class="fw-bold">Remuneração:<span id="span-remuneracao-vaga" class="fw-normal p-2">R$ 5.500,00</span></p>
         </div>
         <div class="w-50 text-center pt-3">
           <span class="fs-3">Candidatos na Vaga</span>
-          <ul class="border border-dark w-100 p-0 mt-3">
+          <div class="w-100 p-0 mt-3">
             <div class="bg bg-dark w-100 d-flex justify-content-between py-2 px-3 text-light">
               <span>Nome</span>
               <span>Data de Nascimento</span>
             </div>
-            <li class="d-flex justify-content-between border border-dark py-2 ps-2 pe-4">
-              <span>Joaozinho</span>
-              <span class="pe-3">06/04/1994</span>
-            </li>
-            <li class="d-flex justify-content-between border border-dark py-2 ps-2 pe-4">
-              <span>Joaozinho</span>
-              <span class="pe-3">06/04/1994</span>
-            </li>
-            <li class="d-flex justify-content-between border border-dark py-2 ps-2 pe-4">
-              <span>Joaozinho</span>
-              <span class="pe-3">06/04/1994</span>
-            </li>
-          </ul>
+            <ul id="lista-candidatos-vaga" class="w-100 p-0 m-0">
+              
+            </ul>
+          </div>
           <div class="py-3 w-100 d-flex justify-content-between">
             <button type="button" onclick="irPara('detalhe-vagas', 'vagas-trabalhador')" class="btn btn-secondary py-1 px-4">Voltar</button>
-            <button type="button" id="btn-candidatar" class="btn btn-dark py-1 px-4" onclick="">Candidatar-se</button>
+            <button type="button" id="btn-candidatar" class="btn btn-dark py-1 px-4" onclick="candidatarVaga()">Candidatar-se</button>
           </div>
         </div>
       </div>
     </div>
-
-
-
-
-
-
-
-
-
-
-
   </div>
   
   <script src="./node_modules/axios/dist/axios.min.js"></script>
