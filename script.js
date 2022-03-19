@@ -232,7 +232,7 @@ const validarLogin = async () => {
     if(validarSenha) {
       document.getElementById('email-input-login').value = '';
       document.getElementById('password-input-login').value = '';
-      listaVagas()
+      listaVagas();
       direcionarUser(user.tipo);
     } else {
       alert('Senha incorreta');
@@ -248,13 +248,13 @@ const direcionarUser = (userTipo) => {
   switch (userTipo) {
     case 'trabalhador':
       const ulVagas = document.getElementById('lista-vagas-trabalhador');
-      // ulVagas.textContent = ''
+      ulVagas.textContent = ''
       listaVagas(ulVagas)
       irPara('login', 'vagas-trabalhador');
       break;
     case 'recrutador':
       const ulVagasRecrut = document.getElementById('lista-vagas-recrut');
-      // ulVagas.textContent = ''
+      ulVagasRecrut.textContent = ''
       listaVagas(ulVagasRecrut)
       irPara('login', 'vagas-recrutador');
       break;
@@ -370,37 +370,64 @@ const maskRemunaracao = (input, value) => {
 
 
 
+
+
+const abrirDetalhes = () => {
+  console.log('ola')
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const listaVagas = async(ul) => {
   const CLASS_UL = "py-4 px-5 container";
-  const CLASS_LI = "d-flex p-3 w-100 border border-dark rounded align-items-center justify-content-between";
-  const CLASS_P = "m-0";
-  const CLASS_SPAN = "fw-bold";
+  const CLASS_BUTTON = "d-flex p-3 w-100 border border-dark rounded align-items-center justify-content-between"
+  const STYLE_BUTTON = "background: transparent; outline: none; border: none;"
+  const CLASS_SPAN = "fw-normal";
+  const CLASS_P = "fw-bold m-0";
 
 
   try {
     const response = await axios.get(`http://localhost:3000/vagas`);
     response.data.forEach( elemento => {
       const spanTitulo = document.createElement('span');
-      spanTitulo.textContent = "Titulo:";
+      spanTitulo.textContent = elemento.titulo;
       spanTitulo.setAttribute('class', CLASS_SPAN);
 
+      const pTitulo = document.createElement('p');
+      pTitulo.textContent = 'Titulo: ';
+      pTitulo.setAttribute('class', CLASS_P);
+      pTitulo.append(spanTitulo);
+
       const spanRemuneracao = document.createElement('span');
-      spanRemuneracao.textContent = "Remuneração:";
+      spanRemuneracao.textContent = elemento.remuneracao;
       spanRemuneracao.setAttribute('class', CLASS_SPAN);
 
-      const pTitulo = document.createElement('p');
-      let titulo = pTitulo.textContent = elemento.titulo;
-      pTitulo.append(spanTitulo, titulo)
-      pTitulo.setAttribute('class', CLASS_P);
-
       const pRemuneracao = document.createElement('p');
-      let remuneracao = pRemuneracao.textContent = elemento.remuneracao;
-      pRemuneracao.append(spanRemuneracao, remuneracao)
+      pRemuneracao.textContent = 'Remuneração: ';
       pRemuneracao.setAttribute('class', CLASS_P);
+      pRemuneracao.append(spanRemuneracao);
+
+      const button = document.createElement('button')
+      button.setAttribute('class', CLASS_BUTTON)
+      button.setAttribute('style', STYLE_BUTTON)
+      button.setAttribute('onclick', 'abrirDetalhes()')
+      button.append(pTitulo, pRemuneracao);
 
       const li = document.createElement('li');
-      li.append(pTitulo, pRemuneracao)
-      li.setAttribute('class', CLASS_LI)
+      li.appendChild(button);
+      li.setAttribute('class', 'mt-3');
 
       ul.appendChild(li)
       ul.setAttribute('class', CLASS_UL)
