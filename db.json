@@ -27,14 +27,28 @@
       "id": 1,
       "titulo": "Teste",
       "descricao": "Vaga fullstack",
-      "remuneracao": "5000.00",
-      "candidatos": null
+      "remuneracao": "R$ 5000.00",
+      "candidatos": []
     },
     {
       "id": 2,
-      "titulo": "Teste",
-      "descricao": "Vaga fullstack",
-      "remuneracao": "6000.00",
+      "titulo": "TESTE",
+      "descricao": "teste",
+      "remuneracao": "R$ 14000.00",
+      "candidatos": []
+    },
+    {
+      "id": 3,
+      "titulo": "TESTRE",
+      "descricao": "TESTE",
+      "remuneracao": "123332",
+      "candidatos": []
+    },
+    {
+      "id": 4,
+      "titulo": "teste",
+      "descricao": "teste",
+      "remuneracao": "1232132131",
       "candidatos": []
     }
   ]

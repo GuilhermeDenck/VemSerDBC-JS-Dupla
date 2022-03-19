@@ -176,7 +176,8 @@ const alternarClasses = (elemento, ...classes) => {
   });
 }
 
-const irPara = (origem, destino) => {
+const irPara = (event, origem, destino) => {
+  event.preventDefault();
   const elementoOrigem = document.getElementById(origem);
   const elementoDestino = document.getElementById(destino);
 
@@ -243,8 +244,8 @@ const validarLogin = async () => {
   }
 }
 
-const direcionarUser = (userTipo) => {
-
+const direcionarUser = (event, userTipo) => {
+  event.preventDefault();
   switch (userTipo) {
     case 'trabalhador':
       const ulVagas = document.getElementById('lista-vagas-trabalhador');
@@ -280,7 +281,6 @@ const esqueceuSenha = async () => {
 }
 
 const validarCadastroVaga = async (event) => {
-
   const cadastroValido = validarTitulo() && validarDescricao() && validarRemuneracao();
 
   try {
@@ -295,7 +295,12 @@ const validarCadastroVaga = async (event) => {
       let idVaga = response.data.id;
       vaga.id = idVaga;
       alert('Vaga cadastrada com sucesso!');
+      
+      const ulVagas = document.getElementById('lista-vagas-recrut');
+      ulVagas.textContent = '';
+      listaVagas(ulVagas);
 
+      irPara('registrationVagas', 'vagas-recrutador');
       document.getElementById('titulo-input-registration').value = '';
       document.getElementById('descricao-input-registration').value = '';
       document.getElementById('remuneracao-input-registration').value = '';
@@ -305,7 +310,6 @@ const validarCadastroVaga = async (event) => {
   } catch (error) {
     alert('Erro ao cadastrar vaga');
   }
-
 }
 
 const validarTitulo = () => {
@@ -342,7 +346,7 @@ const validarRemuneracao = () => {
 
   const remuneracaoSplit = [...remuneracao];
 
-  const valid =  remuneracaoSplit.length >= 2 && !isNaN(remuneracao);
+  const valid =  remuneracaoSplit.length >= 2;
 
   valid ? errorremuneracao.classList.add('d-none') : errorremuneracao.classList.remove('d-none');
   
@@ -368,36 +372,24 @@ const maskRemunaracao = (input, value) => {
   }
 }
 
-
-
-
-
-const abrirDetalhes = (event) => {
+const abrirDetalhes = async (event) => {
   const idDetalhe = event.target.id
-  console.log(idDetalhe)
+  try {
+    const response = await axios.get(`http://localhost:3000/vagas?id=${idDetalhe}`);
+    const vaga = response.data[0];
+    const { id, titulo, descricao, remuneracao, candidatos } = vaga;
+    console.log(vaga);
+  } catch (error) {
+    
+  }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 const listaVagas = async(ul) => {
   const CLASS_UL = "py-4 px-5 container";
-  const CLASS_BUTTON = "d-flex p-3 w-100 border border-dark rounded align-items-center justify-content-between"
-  const STYLE_BUTTON = "background: transparent; outline: none; border: none;"
+  const CLASS_BUTTON = "d-flex p-3 w-100 border border-dark rounded align-items-center justify-content-between btn-hover-vagas"
+  const STYLE_BUTTON = "background: transparent; outline: none; border: none;";
   const CLASS_SPAN = "fw-normal";
   const CLASS_P = "fw-bold m-0";
-
 
   try {
     const response = await axios.get(`http://localhost:3000/vagas`);
@@ -438,6 +430,6 @@ const listaVagas = async(ul) => {
     })
     
   } catch (error) {
-    
+    console.log(`Erro ao listar vagas: ${error}`);
   }
 }
