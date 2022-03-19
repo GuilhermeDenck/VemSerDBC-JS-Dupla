@@ -177,7 +177,6 @@ const alternarClasses = (elemento, ...classes) => {
 }
 
 const irPara = (event, origem, destino) => {
-  event.preventDefault();
   const elementoOrigem = document.getElementById(origem);
   const elementoDestino = document.getElementById(destino);
 
@@ -197,7 +196,6 @@ const validarCadastro = (event) => {
 }
 
 const cadastrarUsuario = async (event) => {
-  event.preventDefault();
   const campoTipo = document.getElementById('user-type').value
   const campoNome = document.getElementById("nome-input").value;
   const campoData = document.getElementById("date-input-registration").value;
@@ -245,7 +243,6 @@ const validarLogin = async () => {
 }
 
 const direcionarUser = (event, userTipo) => {
-  event.preventDefault();
   switch (userTipo) {
     case 'trabalhador':
       const ulVagas = document.getElementById('lista-vagas-trabalhador');
