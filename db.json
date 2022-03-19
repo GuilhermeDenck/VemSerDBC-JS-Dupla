@@ -6,7 +6,12 @@
       "nome": "Alisson Manica",
       "dataNascimento": "22/03/2000",
       "email": "alissonmanica@gmail.com",
-      "senha": "123"
+      "senha": "123",
+      "candidaturas": [
+        {
+          "id": 1
+        }
+      ] 
     },
     {
       "id": 2,

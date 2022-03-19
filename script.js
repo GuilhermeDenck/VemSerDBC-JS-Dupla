@@ -429,3 +429,41 @@ const listaVagas = async(ul) => {
     console.log(`Erro ao listar vagas: ${error}`);
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const reprovaCandidato = () => {
+  const botaoCandidato = document.getElementById('candidato-1')
+  botaoCandidato.disable
+}
