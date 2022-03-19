@@ -368,28 +368,17 @@ const maskRemunaracao = (input, value) => {
   }
 }
 
-
-
-
-
-const abrirDetalhes = (event) => {
+const abrirDetalhes = async (event) => {
   const idDetalhe = event.target.id
-  console.log(idDetalhe)
+  try {
+    const response = await axios.get(`http://localhost:3000/vagas?id=${idDetalhe}`);
+    const vaga = response.data[0];
+    const { id, titulo, descricao, remuneracao, candidatos } = vaga;
+    console.log(vaga);
+  } catch (error) {
+    
+  }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 const listaVagas = async(ul) => {
   const CLASS_UL = "py-4 px-5 container";
