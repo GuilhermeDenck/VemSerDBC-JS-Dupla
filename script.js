@@ -1,4 +1,5 @@
 let USER_LOGADO;
+const BASE_URL = 'http://localhost:3000';
 class Usuario {
   id;
   tipo;
@@ -205,7 +206,7 @@ const cadastrarUsuario = async () => {
   const nomeFormatado = campoNome.split(' ').map( nome => nome.charAt(0).toUpperCase() + nome.slice(1).toLowerCase() ).join(' ');
   const usuario = new Usuario (null, campoTipo, nomeFormatado, campoData, campoEmail, campoSenha, []);
   try {
-    const response = await axios.post(`http://localhost:3000/usuarios`, usuario);
+    const response = await axios.post(`${BASE_URL}/usuarios`, usuario);
     let idUser = response.data.id;
     usuario.id = idUser;
 
@@ -224,7 +225,7 @@ const validarLogin = async () => {
   const emailDigitado = document.getElementById('email-input-login').value;
   const senhaDigitada = document.getElementById('password-input-login').value;
   try {
-    const response = await axios.get(`http://localhost:3000/usuarios?email=${emailDigitado}`);
+    const response = await axios.get(`${BASE_URL}/usuarios?email=${emailDigitado}`);
 
     const user = response.data[0];
 
@@ -251,7 +252,7 @@ const esqueceuSenha = async () => {
   try {
     const email = prompt('Digite seu e-mail');
     alert('Pesquisando aguarde...');
-    const response = await axios.get(`http://localhost:3000/usuarios?email=${email}`);
+    const response = await axios.get(`${BASE_URL}/usuarios?email=${email}`);
 
     const senhaRecuparada = response.data[0].senha;
 
@@ -272,7 +273,7 @@ const validarCadastroVaga = async (event) => {
 
       const vaga = new Vaga(null, titulo, descricao, remuneracao, []);
 
-      const response = await axios.post(`http://localhost:3000/vagas`, vaga);
+      const response = await axios.post(`${BASE_URL}/vagas`, vaga);
       let idVaga = response.data.id;
       vaga.id = idVaga;
       alert('Vaga cadastrada com sucesso!');
@@ -361,7 +362,7 @@ const listaVagas = async() => {
   const CLASS_P = "fw-bold m-0";
 
   try {
-    const response = await axios.get(`http://localhost:3000/vagas`);
+    const response = await axios.get(`${BASE_URL}/vagas`);
     response.data.forEach( elemento => {
       const ul = document.getElementById('lista-vagas');
       const spanTitulo = document.createElement('span');
@@ -423,7 +424,7 @@ let idDetalhe;
 const abrirDetalhes = async (event) => {
   idDetalhe = event.target.id;
   try {
-    const response = await axios.get(`http://localhost:3000/vagas?id=${idDetalhe}`);
+    const response = await axios.get(`${BASE_URL}/vagas?id=${idDetalhe}`);
     const vaga = response.data[0];
     const { id, titulo, descricao, remuneracao, candidatos } = vaga;
 
@@ -573,7 +574,7 @@ const candidatarVaga = async () => {
 const adicionarCandidatura = async () => {
   const candidaturas = new Candidaturas(idDetalhe, USER_LOGADO.id, false);
   try {
-    const responsePostCandidatura = await axios.post('http://localhost:3000/candidaturas', candidaturas);
+    const responsePostCandidatura = await axios.post(`${BASE_URL}/candidaturas`, candidaturas);
     return responsePostCandidatura;
   } catch (error) {
     console.log(`Erro ao adicionar candidatura: ${error}`);
@@ -594,7 +595,7 @@ const adicionarNoUsuario = async (objCandidatura) => {
       candidaturas: candidaturas
     }
 
-    const response = await axios.put(`http://localhost:3000/usuarios/${USER_LOGADO.id}`, UserAlterado);
+    const response = await axios.put(`${BASE_URL}/usuarios/${USER_LOGADO.id}`, UserAlterado);
     return response
   } catch (error) {
     console.log(`Erro ao adicionar candidatura no usuario: ${error}`);
@@ -621,7 +622,7 @@ const adicionarUserNasVagas = async () => {
       remuneracao: remuneracao,
       candidatos: candidatos
     }
-    const response = await axios.put(`http://localhost:3000/vagas/${id}`, vagaAlterada);
+    const response = await axios.put(`${BASE_URL}/vagas/${id}`, vagaAlterada);
     console.log(response);
     return response;
   } catch (error) {
@@ -631,7 +632,7 @@ const adicionarUserNasVagas = async () => {
 
 const getVagaById = (idVaga) => {
   try {
-    const response = axios.get(`http://localhost:3000/vagas/${idVaga}`);
+    const response = axios.get(`${BASE_URL}/vagas/${idVaga}`);
     return response;
   } catch (error) {
     console.log(`Erro ao buscar vaga: ${error}`);
@@ -651,7 +652,7 @@ const reprovarCandidato = (event) => {
 
 const getUserById = async (id) => {
   try {
-    const response = await axios.get(`http://localhost:3000/usuarios/${id}`)
+    const response = await axios.get(`${BASE_URL}/usuarios/${id}`)
     return response;
   } catch (error) {
     console.log('Erro ao buscar o usuario pelo id:', error)
@@ -674,11 +675,11 @@ const excluirVaga = async () => {
       }
     }
 
-    const deletarVagas = await axios.delete(`http://localhost:3000/vagas/${idDetalhe}`);
+    const deletarVagas = await axios.delete(`${BASE_URL}/vagas/${idDetalhe}`);
 
     idVagasCandidatura.forEach(async (elemento) => {
       try {
-        const deletarCandidatos = await axios.delete(`http://localhost:3000/candidaturas/${elemento}`);
+        const deletarCandidatos = await axios.delete(`${BASE_URL}/candidaturas/${elemento}`);
       } catch (error) {
         console.log('Erro ao deletar candidaturas', error);
       }
@@ -693,7 +694,7 @@ const excluirVaga = async () => {
 
 const getCandidaturas = async () => {
   try {
-    const response = await axios.get(`http://localhost:3000/candidaturas`);
+    const response = await axios.get(`${BASE_URL}/candidaturas`);
     return response;
   } catch (error) {
     console.log('Erro ao pegar candidaturas:', error)
@@ -707,7 +708,7 @@ const deletarVagaCandidato = async (idCandidato, idVaga) => {
       try {
           idUser = elemento;
           console.log('entrei no forEach');
-          let response = await axios.get(`http://localhost:3000/usuarios/${idUser}`);
+          let response = await axios.get(`${BASE_URL}/usuarios/${idUser}`);
           let candidato = response.data;
 
           console.log('idVaga antes do filter ->', idVaga);
@@ -724,7 +725,7 @@ const deletarVagaCandidato = async (idCandidato, idVaga) => {
             candidaturas: newCandidaturaUser
           }
 
-          let responsePut = await axios.put(`http://localhost:3000/usuarios/${candidato.id}`, candidatoAlterado);
+          let responsePut = await axios.put(`${BASE_URL}/usuarios/${candidato.id}`, candidatoAlterado);
           console.log(responsePut);
         } catch (error) {
           console.log('erro ao deletar vaga do candidato', error);
@@ -750,8 +751,8 @@ const cancelarCandidatura = async () => {
     candidaturas: newArrayCandidatura
   }
   try {
-    const deleteCandidaturaResponse = await axios.delete(`http://localhost:3000/candidaturas/${candidatura.id}`);
-    const updateUserCandidaturaResponse = await axios.put(`http://localhost:3000/usuarios/${USER_LOGADO.id}`, newUserLogado);
+    const deleteCandidaturaResponse = await axios.delete(`${BASE_URL}/candidaturas/${candidatura.id}`);
+    const updateUserCandidaturaResponse = await axios.put(`${BASE_URL}/usuarios/${USER_LOGADO.id}`, newUserLogado);
 
     const objVaga = await getVagaById(idDetalhe);
 
@@ -763,7 +764,7 @@ const cancelarCandidatura = async () => {
       candidatos: objVaga.data.candidatos.filter(elemento => elemento.id != USER_LOGADO.id)
     }
 
-    const updateVagaCandidatosResponse = await axios.put(`http://localhost:3000/vagas/${idDetalhe}`, newObjVaga);
+    const updateVagaCandidatosResponse = await axios.put(`${BASE_URL}/vagas/${idDetalhe}`, newObjVaga);
     alert('Candidatura cancelada com sucesso!');
   } catch (error) {
     
