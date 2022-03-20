@@ -12,7 +12,7 @@
           "idVaga": "1",
           "idCandidato": 1,
           "reprovado": false,
-          "id": 2
+          "id": 1
         }
       ]
     },
@@ -32,12 +32,6 @@
       "idCandidato": 1,
       "reprovado": false,
       "id": 1
-    },
-    {
-      "idVaga": "1",
-      "idCandidato": 1,
-      "reprovado": false,
-      "id": 2
     }
   ],
   "vagas": [
@@ -49,50 +43,9 @@
       "candidatos": [
         {
           "id": 1,
-          "tipo": "trabalhador",
           "nome": "Alisson Manica",
           "dataNascimento": "22/03/2000",
-          "email": "alissonmanica@gmail.com",
-          "senha": "123",
-          "candidaturas": [
-            {
-              "idVaga": "1",
-              "idCandidato": 1,
-              "reprovado": false,
-              "id": 4
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": 2,
-      "titulo": "TESTE",
-      "descricao": "teste",
-      "remuneracao": "R$ 14000.00",
-      "candidatos": []
-    },
-    {
-      "id": 3,
-      "titulo": "Front-End",
-      "descricao": "front",
-      "remuneracao": "R$ 8000",
-      "candidatos": [
-        {
-          "id": 1,
-          "tipo": "trabalhador",
-          "nome": "Alisson Manica",
-          "dataNascimento": "22/03/2000",
-          "email": "alissonmanica@gmail.com",
-          "senha": "123",
-          "candidaturas": [
-            {
-              "idVaga": "1",
-              "idCandidato": 1,
-              "reprovado": false,
-              "id": 2
-            }
-          ]
+          "email": "alissonmanica@gmail.com"
         }
       ]
     }

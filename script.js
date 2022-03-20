@@ -505,14 +505,6 @@ const abrirDetalhes = async (event) => {
   }
 }
 
-
-
-const reprovaCandidato = () => {
-  const botaoCandidato = document.getElementById('candidato-1')
-  botaoCandidato.disable
-}
-
-
 const candidatarVaga = async () => {
   try {
     
@@ -566,7 +558,12 @@ const adicionarUserNasVagas = async () => {
       titulo: titulo,
       descricao: descricao,
       remuneracao: remuneracao,
-      candidatos: [USER_LOGADO]
+      candidatos: [{
+        id: USER_LOGADO.id,
+        nome: USER_LOGADO.nome,
+        dataNascimento: USER_LOGADO.dataNascimento,
+        email: USER_LOGADO.email
+      }]
     }
     const response = await axios.put(`http://localhost:3000/vagas/${id}`, vagaAlterada);
     console.log(response);
