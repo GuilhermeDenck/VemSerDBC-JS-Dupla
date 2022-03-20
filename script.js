@@ -464,6 +464,7 @@ const abrirDetalhes = async (event) => {
 
         spanNome.textContent = candidato.nome;
         spanNome.setAttribute('class', STYLE_SPAN_DATA)
+        spanNome.setAttribute('id', candidato.nome);
         spanDataNacimento.textContent = candidato.dataNascimento;
         spanDataNacimento.setAttribute('class', STYLE_SPAN_DATA);
         li.append(spanNome, spanDataNacimento);
@@ -492,6 +493,14 @@ const abrirDetalhes = async (event) => {
         btnCancelarCandidatura.setAttribute('class', BTN_CANCELAR_STYLE);
         btnCancelarCandidatura.textContent = 'Cancelar Candidatura';
         btnCancelarCandidatura.setAttribute('onclick', 'cancelarCandidatura()');
+        if(newArrayCandidaturas.reprovado == true) {
+          const spanUser = document.getElementById(USER_LOGADO.nome);
+          spanUser.setAttribute('class', 'text-danger py-2');
+      
+          btnCancelarCandidatura.disabled = true;
+        } else {
+          btnCancelarCandidatura.disabled = false;
+        }
         divBtn.append(btnVoltar, btnCancelarCandidatura);
         divTrabalhador.appendChild(divBtn);
       } else {
