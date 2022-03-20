@@ -9,9 +9,15 @@
       "senha": "123",
       "candidaturas": [
         {
-          "idvaga": "2",
+          "idvaga": "1",
           "idcandidato": 1,
           "reprovado": true,
+          "id": 1
+        },
+        {
+          "idvaga": "2",
+          "idcandidato": 1,
+          "reprovado": false,
           "id": 2
         }
       ]
@@ -52,13 +58,19 @@
     {
       "idvaga": "1",
       "idcandidato": 1,
+      "reprovado": true,
+      "id": 1
+    },
+    {
+      "idvaga": "2",
+      "idcandidato": 1,
       "reprovado": false,
       "id": 2
     },
     {
       "idvaga": "1",
       "idcandidato": 3,
-      "reprovado": true,
+      "reprovado": false,
       "id": 3
     },
     {
@@ -75,6 +87,12 @@
       "descricao": "11111",
       "remuneracao": "R$ 11111",
       "candidatos": [
+        {
+          "id": 1,
+          "nome": "Alisson Manica",
+          "dataNascimento": "22/03/2000",
+          "email": "alissonmanica@gmail.com"
+        },
         {
           "id": 3,
           "nome": "trabalhador",

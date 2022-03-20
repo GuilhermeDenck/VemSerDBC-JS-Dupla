@@ -687,7 +687,6 @@ const getVagaById = (idVaga) => {
 const reprovarCandidato = async (event) => {
   const idBtn = event.target.id;
   const idCandidaturaUser = idBtn.split('-')[2];
-  console.log(idCandidaturaUser);
 
   const objCandidatura = await axios.get(`${BASE_URL}/candidaturas/${idCandidaturaUser}`);
   const objCandidatoAlterado = {
@@ -699,14 +698,12 @@ const reprovarCandidato = async (event) => {
 
   const response = await axios.put(`${BASE_URL}/candidaturas/${idCandidaturaUser}`, objCandidatoAlterado);
   const getCandidato = await getUserById(objCandidatoAlterado.idcandidato);
-  console.log(getCandidato.data);
   
-  let newArrayUser = getCandidato.data.candidaturas.forEach( elemento => {
-    
-   if (elemento.id == idCandidaturaUser) {
-     
-   }
-  })
+  getCandidato.data.candidaturas.forEach(candidatura => {
+    if(candidatura.id == objCandidatoAlterado.id) {
+      candidatura.reprovado = true;
+    }
+  });
 
   const candidatoAlterado = {
     id: getCandidato.data.id,
@@ -715,11 +712,13 @@ const reprovarCandidato = async (event) => {
     dataNascimento: getCandidato.data.dataNascimento,
     email: getCandidato.data.email,
     senha: getCandidato.data.senha,
-    candidaturas: 
+    candidaturas: getCandidato.data.candidaturas
   }
-
+  
+  const responseAlterarCandidato = await axios.put(`${BASE_URL}/usuarios/${getCandidato.data.id}`, candidatoAlterado);
 
   document.getElementById(idBtn).disabled = true;
+  document.getElementById(`candidato-${idCandidaturaUser}`).setAttribute('class', 'text-danger py-2');
   console.log('teste reprovar');
 }
 
