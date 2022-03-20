@@ -19,12 +19,6 @@
           "idcandidato": 1,
           "reprovado": false,
           "id": 2
-        },
-        {
-          "idvaga": "3",
-          "idcandidato": 1,
-          "reprovado": false,
-          "id": 3
         }
       ]
     },
@@ -49,19 +43,13 @@
           "idvaga": "1",
           "idcandidato": 3,
           "reprovado": false,
-          "id": 4
+          "id": 3
         },
         {
           "idvaga": "2",
           "idcandidato": 3,
           "reprovado": false,
-          "id": 5
-        },
-        {
-          "idvaga": "3",
-          "idcandidato": 3,
-          "reprovado": false,
-          "id": 6
+          "id": 4
         }
       ]
     }
@@ -80,36 +68,24 @@
       "id": 2
     },
     {
-      "idvaga": "3",
-      "idcandidato": 1,
-      "reprovado": false,
-      "id": 3
-    },
-    {
       "idvaga": "1",
       "idcandidato": 3,
       "reprovado": false,
-      "id": 4
+      "id": 3
     },
     {
       "idvaga": "2",
       "idcandidato": 3,
       "reprovado": false,
-      "id": 5
-    },
-    {
-      "idvaga": "3",
-      "idcandidato": 3,
-      "reprovado": false,
-      "id": 6
+      "id": 4
     }
   ],
   "vagas": [
     {
       "id": 1,
-      "titulo": "1111111",
-      "descricao": "1111111111",
-      "remuneracao": "111111111",
+      "titulo": "11111",
+      "descricao": "11111",
+      "remuneracao": "R$ 11111",
       "candidatos": [
         {
           "id": 1,
@@ -127,29 +103,9 @@
     },
     {
       "id": 2,
-      "titulo": "22222222",
-      "descricao": "222222222",
-      "remuneracao": "R$ 22222222222",
-      "candidatos": [
-        {
-          "id": 1,
-          "nome": "Alisson Manica",
-          "dataNascimento": "22/03/2000",
-          "email": "alissonmanica@gmail.com"
-        },
-        {
-          "id": 3,
-          "nome": "trabalhador",
-          "dataNascimento": "03/03/2004",
-          "email": "trabalhador@gmail.com"
-        }
-      ]
-    },
-    {
-      "id": 3,
-      "titulo": "333333",
-      "descricao": "3333333",
-      "remuneracao": "R$ 33333",
+      "titulo": "22222",
+      "descricao": "222222",
+      "remuneracao": "R$ 22222",
       "candidatos": [
         {
           "id": 1,

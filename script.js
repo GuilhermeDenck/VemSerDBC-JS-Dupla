@@ -609,27 +609,33 @@ const getUserById = async (id) => {
   }
 }
 
-
-
-
 const excluirVaga = async () => {
+  console.log('idDetalhe ->', idDetalhe);
   try {
     const pegaCandidaturas = await getCandidaturas();
+    let idVagasCandidatura = [];
+    let idCandidatosVaga = [];
     let idVaga;
-    let idCandidatoVaga = [];
 
     for(const i of pegaCandidaturas.data){
-      if(i.idvaga === idDetalhe){
-        idVaga = i.id;
-        idCandidatoVaga.push(i.idcandidato);
+      if(i.idvaga == idDetalhe){
+        idVaga = i.idvaga;
+        idVagasCandidatura.push(i.id);
+        idCandidatosVaga.push(i.idcandidato);
       }
     }
 
-    const deletarCandidatos = await axios.delete(`http://localhost:3000/candidaturas/${idVaga}`);
-
     const deletarVagas = await axios.delete(`http://localhost:3000/vagas/${idDetalhe}`);
 
-    const deletarVagaDoCandidato = await deletarVagaCandidato(idCandidatoVaga, idVaga);
+    idVagasCandidatura.forEach(async (elemento) => {
+      try {
+        const deletarCandidatos = await axios.delete(`http://localhost:3000/candidaturas/${elemento}`);
+      } catch (error) {
+        console.log('Erro ao deletar candidaturas', error);
+      }
+    });
+  
+    const deletarVagaDoCandidato = await deletarVagaCandidato(idCandidatosVaga, idVaga);
 
   } catch (error) {
     console.log('erro ao deletar a vaga', error)
@@ -647,36 +653,30 @@ const getCandidaturas = async () => {
 
 const deletarVagaCandidato = async (idCandidato, idVaga) => {
   try {
-      let arrayCandidatos = [];
-      console.log('entrei no deletar vaga candidato');
-      idCandidato.forEach(async (id) => {
-        try {
+    console.log('entrei no deletar vaga candidato');
+    idCandidato.forEach(async (elemento) => {
+      try {
+          idUser = elemento;
           console.log('entrei no forEach');
-          let response = await axios.get(`http://localhost:3000/usuarios/${id}`);
-          arrayCandidatos.push(response.data);
-        } catch (error) {
-          console.log('erro ao deletar vaga do candidato', error);
-        }
-      });
+          let response = await axios.get(`http://localhost:3000/usuarios/${idUser}`);
+          let candidato = response.data;
 
-      console.log('sai do forEach');
-      console.log(arrayCandidatos);
-      arrayCandidatos.forEach(async (user) => {
-        console.log('entrei no forEach do arrayCandidatos');
-        let newCandidaturasUser = user.candiaturas.filter(candidato => candidato.id != idVaga );
-        console.log(newCandidaturasUser);
-        try {
-          const newCandidatura = {
-            id: user.id,
-            tipo: user.tipo,
-            nome: user.nome,
-            dataNascimento: user.dataNascimento,
-            email: user.email,
-            senha: user.senha,
-            candidaturas: newCandidaturasUser
+          console.log('idVaga antes do filter ->', idVaga);
+          let newCandidaturaUser = candidato.candidaturas.filter(candidatura => candidatura.idvaga != idVaga );
+          console.log(newCandidaturaUser);
+
+          const candidatoAlterado = {
+            id: candidato.id,
+            tipo: candidato.tipo,
+            nome: candidato.nome,
+            dataNascimento: candidato.dataNascimento,
+            email: candidato.email,
+            senha: candidato.senha,
+            candidaturas: newCandidaturaUser
           }
-          const response = await axios.put(`http://localhost:3000/usuarios/${user.id}`, newCandidatura);
-          return response
+
+          let responsePut = await axios.put(`http://localhost:3000/usuarios/${candidato.id}`, candidatoAlterado);
+          console.log(responsePut);
         } catch (error) {
           console.log('erro ao deletar vaga do candidato', error);
         }
