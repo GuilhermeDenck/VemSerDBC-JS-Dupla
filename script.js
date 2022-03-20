@@ -684,10 +684,39 @@ const getVagaById = (idVaga) => {
 
 }
 
-const reprovarCandidato = (event) => {
+const reprovarCandidato = async (event) => {
   const idBtn = event.target.id;
-  const idCandidato = idBtn.split('-')[2];
-  console.log(idCandidato);
+  const idCandidaturaUser = idBtn.split('-')[2];
+  console.log(idCandidaturaUser);
+
+  const objCandidatura = await axios.get(`${BASE_URL}/candidaturas/${idCandidaturaUser}`);
+  const objCandidatoAlterado = {
+    idvaga: objCandidatura.data.idvaga,
+    idcandidato: objCandidatura.data.idcandidato,
+    reprovado: true,
+    id: objCandidatura.data.id
+  }
+
+  const response = await axios.put(`${BASE_URL}/candidaturas/${idCandidaturaUser}`, objCandidatoAlterado);
+  const getCandidato = await getUserById(objCandidatoAlterado.idcandidato);
+  console.log(getCandidato.data);
+  
+  let newArrayUser = getCandidato.data.candidaturas.forEach( elemento => {
+    
+   if (elemento.id == idCandidaturaUser) {
+     
+   }
+  })
+
+  const candidatoAlterado = {
+    id: getCandidato.data.id,
+    tipo: getCandidato.data.tipo,
+    nome: getCandidato.data.nome,
+    dataNascimento: getCandidato.data.dataNascimento,
+    email: getCandidato.data.email,
+    senha: getCandidato.data.senha,
+    candidaturas: 
+  }
 
 
   document.getElementById(idBtn).disabled = true;

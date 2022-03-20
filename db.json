@@ -58,7 +58,7 @@
     {
       "idvaga": "1",
       "idcandidato": 3,
-      "reprovado": false,
+      "reprovado": true,
       "id": 3
     },
     {
