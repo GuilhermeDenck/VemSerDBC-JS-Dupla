@@ -223,6 +223,16 @@ const cadastrarUsuario = async () => {
   }
 }
 
+const voltarCadastro = () => {
+  const campoTipo = document.getElementById('user-type').value = '';
+  const campoNome = document.getElementById("nome-input").value = '';
+  const campoData = document.getElementById("date-input-registration").value = '';
+  const campoEmail = document.getElementById("email-input-registration").value = '';
+  const campoSenha = document.getElementById("password-input-registration").value = '';
+
+  irPara('registration', 'login')
+}
+
 const validarLogin = async () => {	
   const emailDigitado = document.getElementById('email-input-login').value;
   const senhaDigitada = document.getElementById('password-input-login').value;
