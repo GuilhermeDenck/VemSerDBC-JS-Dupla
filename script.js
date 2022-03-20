@@ -559,7 +559,16 @@ const abrirDetalhes = async (event) => {
       divRecrutador.classList.add('d-flex');
 
     const STYLE_BTN_REPROVAR = "btn btn-danger";
-    vaga.candidatos.forEach(candidato => {
+    vaga.candidatos.forEach( async (candidato) => {
+
+      try {
+        console.log(vaga.candidatos);
+        const candidaturas = await getCandidaturas();  
+        console.log(candidaturas.data);
+      } catch (error) {
+        console.log('Erro ao buscar candidaturas', error);
+      }
+
       let idButton = `btn-reprova-${candidato.id}`
       const spanNome = document.createElement('span');
       const spanDataNacimento = document.createElement('span');
@@ -578,8 +587,7 @@ const abrirDetalhes = async (event) => {
       spanDataNacimento.setAttribute('class', STYLE_SPAN_DATA);
       li.append(spanNome, spanDataNacimento, btnReprovar);
       li.setAttribute('class', STYLE_LI_CANDITADOS);
-      
-      //setar id para Li para poder reprovar o cara li.setAttribute('id', );
+    
       ulRecrutador.appendChild(li);
     });
     }
@@ -600,6 +608,7 @@ const candidatarVaga = async () => {
     const adicionarCandidatoNasVagas = await adicionarUserNasVagas();
     
     alert('Candidatura realizada com sucesso!');
+    irPara('detalhe-vagas', 'vagas');
   } catch (error) {
     const msg = 'Erro ao candidatar vaga';
     alert(msg);
@@ -762,6 +771,13 @@ const excluirVaga = async () => {
   
     const deletarVagaDoCandidato = await deletarVagaCandidato(idCandidatosVaga, idVaga);
 
+
+    const ul = document.getElementById('lista-vagas');
+    ul.textContent = '';
+    listaVagas();
+    setTimeout(() => {
+      irPara('detalhe-vagas', 'vagas');
+    }, 1000);   
   } catch (error) {
     const msg = 'Erro ao deletar vaga';
     alert(msg);
@@ -782,7 +798,6 @@ const getCandidaturas = async () => {
 
 const deletarVagaCandidato = async (idCandidato, idVaga) => {
   try {
-    console.log('entrei no deletar vaga candidato');
     idCandidato.forEach(async (elemento) => {
       try {
           idUser = elemento;
@@ -847,6 +862,7 @@ const cancelarCandidatura = async () => {
 
     const updateVagaCandidatosResponse = await axios.put(`${BASE_URL}/vagas/${idDetalhe}`, newObjVaga);
     alert('Candidatura cancelada com sucesso!');
+    irPara('detalhe-vagas', 'vagas')
   } catch (error) {
     const msg = 'Erro ao cancelar candidatura';
     alert(msg);
