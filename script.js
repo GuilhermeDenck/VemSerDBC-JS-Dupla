@@ -520,7 +520,8 @@ const abrirDetalhes = async (event) => {
       btnVoltar.textContent = 'Voltar';
       btnVoltar.setAttribute('onclick', 'irPara("detalhe-vagas", "vagas")');
 
-  
+      console.log(USER_LOGADO);
+
       let newArrayCandidaturas = USER_LOGADO.candidaturas.find(elemento => elemento.idvaga == idDetalhe);
       if(newArrayCandidaturas) {
         const btnCancelarCandidatura = document.createElement('button');
@@ -549,12 +550,6 @@ const abrirDetalhes = async (event) => {
         divButtonsTrabalhador.textContent=''
         divButtonsTrabalhador.appendChild(divBtn);
       }
-
-
-      // <div class="py-3 w-100 d-flex justify-content-between">
-      //   <button type="button" onclick="irPara('detalhe-vagas', 'vagas')" class="btn btn-secondary py-1 px-4">Voltar</button>
-      //   <button type="button" id="btn-candidatar" class="btn btn-dark py-1 px-4" onclick="candidatarVaga()">Candidatar-se</button>
-      // </div>
     }
 
     if(USER_LOGADO.tipo == 'recrutador') {
@@ -573,7 +568,7 @@ const abrirDetalhes = async (event) => {
       btnReprovar.setAttribute('id', idButton)
       btnReprovar.setAttribute('class', STYLE_BTN_REPROVAR);
       btnReprovar.textContent = 'Reprovar';
-      btnReprovar.setAttribute('onclick', 'reprovarCandidato()');
+      btnReprovar.setAttribute('onclick', 'reprovarCandidato(event)');
       
 
       spanNome.textContent = candidato.nome;
@@ -763,13 +758,10 @@ const deletarVagaCandidato = async (idCandidato, idVaga) => {
     idCandidato.forEach(async (elemento) => {
       try {
           idUser = elemento;
-          console.log('entrei no forEach');
           let response = await axios.get(`${BASE_URL}/usuarios/${idUser}`);
           let candidato = response.data;
 
-          console.log('idVaga antes do filter ->', idVaga);
           let newCandidaturaUser = candidato.candidaturas.filter(candidatura => candidatura.idvaga != idVaga );
-          console.log(newCandidaturaUser);
 
           const candidatoAlterado = {
             id: candidato.id,
@@ -782,7 +774,6 @@ const deletarVagaCandidato = async (idCandidato, idVaga) => {
           }
 
           let responsePut = await axios.put(`${BASE_URL}/usuarios/${candidato.id}`, candidatoAlterado);
-          console.log(responsePut);
         } catch (error) {
           const msg = 'Erro ao deletar vaga do candidato';
           alert(msg);
@@ -810,6 +801,8 @@ const cancelarCandidatura = async () => {
     senha: USER_LOGADO.senha,
     candidaturas: newArrayCandidatura
   }
+
+  USER_LOGADO = newUserLogado;
   try {
     const deleteCandidaturaResponse = await axios.delete(`${BASE_URL}/candidaturas/${candidatura.id}`);
     const updateUserCandidaturaResponse = await axios.put(`${BASE_URL}/usuarios/${USER_LOGADO.id}`, newUserLogado);
