@@ -470,6 +470,46 @@ const abrirDetalhes = async (event) => {
         li.setAttribute('class', STYLE_LI_CANDITADOS);
         ulTrabalhador.appendChild(li);
       });
+
+      const DIVBTN_STYLE = "py-3 w-100 d-flex justify-content-between";
+      const BTN_VOLTAR_STYLE = "btn btn-secondary py-1 px-4";
+      const BTN_CANCELAR_STYLE = "btn btn-danger py-1 px-4";
+      const BTN_CANDIDATAR_STYLE = "btn btn-dark py-1 px-4";
+
+      const divBtn = document.createElement('div');
+      divBtn.setAttribute('class', DIVBTN_STYLE);
+      const btnVoltar = document.createElement('button');
+      btnVoltar.setAttribute('class', BTN_VOLTAR_STYLE);
+      btnVoltar.textContent = 'Voltar';
+      btnVoltar.setAttribute('onclick', 'irPara("detalhe-vagas", "vagas")');
+
+  
+      let newArrayCandidaturas = USER_LOGADO.candidaturas.find(elemento => elemento.idvaga == idDetalhe);
+
+      if(newArrayCandidaturas) {
+        const btnCancelarCandidatura = document.createElement('button');
+        btnCancelarCandidatura.setAttribute('id', 'btn-cancelar-candidatura');
+        btnCancelarCandidatura.setAttribute('class', BTN_CANCELAR_STYLE);
+        btnCancelarCandidatura.textContent = 'Cancelar Candidatura';
+        btnCancelarCandidatura.setAttribute('onclick', 'cancelarCandidatura()');
+        divBtn.append(btnVoltar, btnCancelarCandidatura);
+        divTrabalhador.appendChild(divBtn);
+      } else {
+        const btnCandidatar = document.createElement('button');
+        btnCandidatar.setAttribute('id', 'btn-candidatar');
+        btnCandidatar.setAttribute('class', BTN_CANDIDATAR_STYLE);
+        btnCandidatar.textContent = 'Candidatar-se';
+        btnCandidatar.setAttribute('onclick', 'candidatarVaga()');
+
+        divBtn.append(btnVoltar, btnCandidatar);
+        divTrabalhador.appendChild(divBtn);
+      }
+
+
+      // <div class="py-3 w-100 d-flex justify-content-between">
+      //   <button type="button" onclick="irPara('detalhe-vagas', 'vagas')" class="btn btn-secondary py-1 px-4">Voltar</button>
+      //   <button type="button" id="btn-candidatar" class="btn btn-dark py-1 px-4" onclick="candidatarVaga()">Candidatar-se</button>
+      // </div>
     }
 
     if(USER_LOGADO.tipo == 'recrutador') {
@@ -488,7 +528,7 @@ const abrirDetalhes = async (event) => {
       btnReprovar.setAttribute('id', idButton)
       btnReprovar.setAttribute('class', STYLE_BTN_REPROVAR);
       btnReprovar.textContent = 'Reprovar';
-      btnReprovar.setAttribute('onclick', 'reprovarCandidato(event)');
+      btnReprovar.setAttribute('onclick', 'reprovarCandidato()');
       
 
       spanNome.textContent = candidato.nome;
@@ -515,7 +555,7 @@ const candidatarVaga = async () => {
 
     const adicionarCandidatoNasVagas = await adicionarUserNasVagas();
     
-
+    alert('Candidatura realizada com sucesso!');
   } catch (error) {
     console.log(`Erro ao candidatar vaga: ${error}`);
   }
@@ -683,5 +723,40 @@ const deletarVagaCandidato = async (idCandidato, idVaga) => {
       });
   } catch (error) {
     console.log('erro ao deletar vaga das candidaturas do usuário', error);
+  }
+}
+
+const cancelarCandidatura = async () => {
+  let candidatura = USER_LOGADO.candidaturas.find(elemento => elemento.idvaga == idDetalhe);
+  
+  let newArrayCandidatura = USER_LOGADO.candidaturas.filter(elemento => elemento.id != candidatura.id);
+
+  const newUserLogado = {
+    id: USER_LOGADO.id,
+    tipo: USER_LOGADO.tipo,
+    nome: USER_LOGADO.nome,
+    dataNascimento: USER_LOGADO.dataNascimento,
+    email: USER_LOGADO.email,
+    senha: USER_LOGADO.senha,
+    candidaturas: newArrayCandidatura
+  }
+  try {
+    const deleteCandidaturaResponse = await axios.delete(`http://localhost:3000/candidaturas/${candidatura.id}`);
+    const updateUserCandidaturaResponse = await axios.put(`http://localhost:3000/usuarios/${USER_LOGADO.id}`, newUserLogado);
+
+    const objVaga = await getVagaById(idDetalhe);
+
+    const newObjVaga = {
+      id: objVaga.data.id,
+      titulo: objVaga.data.titulo,
+      descricao: objVaga.data.descricao,
+      remuneracao: objVaga.data.remuneracao,
+      candidatos: objVaga.data.candidatos.filter(elemento => elemento.id != USER_LOGADO.id)
+    }
+
+    const updateVagaCandidatosResponse = await axios.put(`http://localhost:3000/vagas/${idDetalhe}`, newObjVaga);
+    alert('Candidatura cancelada com sucesso!');
+  } catch (error) {
+    
   }
 }
