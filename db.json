@@ -9,10 +9,10 @@
       "senha": "123",
       "candidaturas": [
         {
-          "idvaga": "2",
+          "idvaga": "1",
           "idcandidato": 1,
           "reprovado": false,
-          "id": 2
+          "id": 4
         }
       ]
     },
@@ -34,10 +34,22 @@
       "id": 1
     },
     {
-      "idvaga": "2",
+      "idvaga": "1",
       "idcandidato": 1,
       "reprovado": false,
       "id": 2
+    },
+    {
+      "idvaga": "1",
+      "idcandidato": 1,
+      "reprovado": false,
+      "id": 3
+    },
+    {
+      "idvaga": "1",
+      "idcandidato": 1,
+      "reprovado": false,
+      "id": 4
     }
   ],
   "vagas": [
@@ -45,7 +57,7 @@
       "id": 1,
       "titulo": "aaaaa",
       "descricao": "aaaaa",
-      "remuneracao": "R$ 1111",
+      "remuneracao": "R$ 121351351",
       "candidatos": [
         {
           "id": 1,

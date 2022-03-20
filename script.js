@@ -495,6 +495,8 @@ const abrirDetalhes = async (event) => {
       
 
       spanNome.textContent = candidato.nome;
+      spanNome.setAttribute('id', `candidato-${candidato.id}`)
+      spanNome.setAttribute('class', STYLE_SPAN_DATA)
       spanDataNacimento.textContent = candidato.dataNascimento;
       spanDataNacimento.setAttribute('class', STYLE_SPAN_DATA);
       li.append(spanNome, spanDataNacimento, btnReprovar);
@@ -616,8 +618,10 @@ try {
   pegaCandidaturas.data.forEach((elemento) => {
     console.log(elemento.idvaga);
     console.log(idDetalhe);
+    const confere = elemento.idvaga == idDetalhe
+    console.log(confere)
     if (elemento.idvaga == idDetalhe) {
-      const deletarCandidatos = axios.delete(`http://localhost:3000/candidaturas?idvaga=${elemento.idvaga}`);
+      const deletarCandidatos = axios.delete(`http://localhost:3000/candidaturas?idvaga=${idDetalhe}`);
     }
   })
 } catch (error) {
