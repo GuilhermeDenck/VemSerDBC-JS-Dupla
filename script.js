@@ -50,6 +50,21 @@ class Vaga {
 }
 
 
+const verificaTempo = () => {
+  console.time()
+
+for(let i = 0; i < 100000; i++) {
+    
+}
+
+const time = console.timeEnd()
+}
+
+
+
+
+
+
 //#region VALIDAR NOME
 
 const validarNome = () => {
@@ -460,13 +475,14 @@ const abrirDetalhes = async (event) => {
     const divTrabalhador = document.getElementById('candidatos-trabalhador');
 
     const divRecrutador = document.getElementById('candidatos-recrutador');
-
     if(USER_LOGADO.tipo == 'trabalhador') {
       divRecrutador.classList.remove('d-flex');
       divRecrutador.classList.add('d-none');
       divTrabalhador.classList.remove('d-none');
       divTrabalhador.classList.add('d-flex');
       
+      const divButtonsTrabalhador = document.getElementById('divBtnTrabalhador')
+
       vaga.candidatos.forEach(candidato => {
         const spanNome = document.createElement('span');
         const spanDataNacimento = document.createElement('span');
@@ -496,7 +512,6 @@ const abrirDetalhes = async (event) => {
 
   
       let newArrayCandidaturas = USER_LOGADO.candidaturas.find(elemento => elemento.idvaga == idDetalhe);
-
       if(newArrayCandidaturas) {
         const btnCancelarCandidatura = document.createElement('button');
         btnCancelarCandidatura.setAttribute('id', 'btn-cancelar-candidatura');
@@ -512,16 +527,17 @@ const abrirDetalhes = async (event) => {
           btnCancelarCandidatura.disabled = false;
         }
         divBtn.append(btnVoltar, btnCancelarCandidatura);
-        divTrabalhador.appendChild(divBtn);
+        divButtonsTrabalhador.textContent=''
+        divButtonsTrabalhador.appendChild(divBtn);
       } else {
         const btnCandidatar = document.createElement('button');
         btnCandidatar.setAttribute('id', 'btn-candidatar');
         btnCandidatar.setAttribute('class', BTN_CANDIDATAR_STYLE);
         btnCandidatar.textContent = 'Candidatar-se';
         btnCandidatar.setAttribute('onclick', 'candidatarVaga()');
-
         divBtn.append(btnVoltar, btnCandidatar);
-        divTrabalhador.appendChild(divBtn);
+        divButtonsTrabalhador.textContent=''
+        divButtonsTrabalhador.appendChild(divBtn);
       }
 
 
