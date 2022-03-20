@@ -651,10 +651,12 @@ const deletarVagaCandidato = async (idCandidato, idVaga) => {
   try {
       let arrayCandidatos = [];
       console.log('entrei no deletar vaga candidato');
-      idCandidato.forEach(async (id) => {
+      idCandidato.forEach( async id => {
         try {
+          console.log(id)
           console.log('entrei no forEach');
           let response = await axios.get(`http://localhost:3000/usuarios/${id}`);
+          console.log(response.data)
           arrayCandidatos.push(response.data);
         } catch (error) {
           console.log('erro ao deletar vaga do candidato', error);
@@ -665,7 +667,7 @@ const deletarVagaCandidato = async (idCandidato, idVaga) => {
       console.log(arrayCandidatos);
       arrayCandidatos.forEach(async (user) => {
         console.log('entrei no forEach do arrayCandidatos');
-        let newCandidaturasUser = user.candiaturas.filter(candidato => candidato.id != idVaga );
+        let newCandidaturasUser = user.candidaturas.filter(candidato => candidato.id != idVaga );
         console.log(newCandidaturasUser);
         try {
           const newCandidatura = {
