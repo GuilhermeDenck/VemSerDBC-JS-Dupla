@@ -15,7 +15,7 @@
           "id": 1
         },
         {
-          "idvaga": "2",
+          "idvaga": "3",
           "idcandidato": 1,
           "reprovado": false,
           "id": 2
@@ -30,6 +30,28 @@
       "email": "guidenck0303@gmail.com",
       "senha": "123",
       "candidaturas": []
+    },
+    {
+      "id": 3,
+      "tipo": "trabalhador",
+      "nome": "trabalhador",
+      "dataNascimento": "03/03/2004",
+      "email": "trabalhador@gmail.com",
+      "senha": "123",
+      "candidaturas": [
+        {
+          "idvaga": "1",
+          "idcandidato": 3,
+          "reprovado": false,
+          "id": 3
+        },
+        {
+          "idvaga": "3",
+          "idcandidato": 3,
+          "reprovado": false,
+          "id": 4
+        }
+      ]
     }
   ],
   "candidaturas": [
@@ -40,10 +62,22 @@
       "id": 1
     },
     {
-      "idvaga": "2",
+      "idvaga": "3",
       "idcandidato": 1,
       "reprovado": false,
       "id": 2
+    },
+    {
+      "idvaga": "1",
+      "idcandidato": 3,
+      "reprovado": false,
+      "id": 3
+    },
+    {
+      "idvaga": "3",
+      "idcandidato": 3,
+      "reprovado": false,
+      "id": 4
     }
   ],
   "vagas": [
@@ -58,20 +92,12 @@
           "nome": "Alisson Manica",
           "dataNascimento": "22/03/2000",
           "email": "alissonmanica@gmail.com"
-        }
-      ]
-    },
-    {
-      "id": 2,
-      "titulo": "bbbbb",
-      "descricao": "bbbbbbbb",
-      "remuneracao": "22222222222",
-      "candidatos": [
+        },
         {
-          "id": 1,
-          "nome": "Alisson Manica",
-          "dataNascimento": "22/03/2000",
-          "email": "alissonmanica@gmail.com"
+          "id": 3,
+          "nome": "trabalhador",
+          "dataNascimento": "03/03/2004",
+          "email": "trabalhador@gmail.com"
         }
       ]
     },
@@ -80,7 +106,20 @@
       "titulo": "cccccc",
       "descricao": "cccccccccc",
       "remuneracao": "3333333333",
-      "candidatos": []
+      "candidatos": [
+        {
+          "id": 1,
+          "nome": "Alisson Manica",
+          "dataNascimento": "22/03/2000",
+          "email": "alissonmanica@gmail.com"
+        },
+        {
+          "id": 3,
+          "nome": "trabalhador",
+          "dataNascimento": "03/03/2004",
+          "email": "trabalhador@gmail.com"
+        }
+      ]
     }
   ]
 }
