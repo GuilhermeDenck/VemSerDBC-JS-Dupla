@@ -115,27 +115,19 @@
     </form>
 
 
-    <div id="vagas-trabalhador" class="container d-none p-0 border border-dark rounded flex-column align-items-center justify-content-center">
+    <div id="vagas" class="container d-none p-0 border border-dark rounded flex-column align-items-center justify-content-center">
       <div class="bg bg-dark w-100 h-100 text-center p-2 text-white">
           <span>Vagas</span>
       </div>
-      <ul id="lista-vagas-trabalhador" class="py-4 px-5 container">
-      </ul>
-      <div class="py-3 px-5 d-flex justify-content-center">
-            <button type="button" id="register-btn" class="btn btn-dark py-1 px-5" onclick="irPara('vagas-trabalhador', 'login')">Sair</button>
-      </div>
-    </div>
+      <ul id="lista-vagas" class="py-4 px-5 container">
 
-
-    <div id="vagas-recrutador" class="container d-none p-0 border border-dark rounded flex-column align-items-center justify-content-center">
-      <div class="bg bg-dark w-100 h-100 text-center p-2 text-white">
-          <span>Vagas</span>
-      </div>
-      <ul id="lista-vagas-recrut" class="py-4 px-5 container">
       </ul>
-      <div class="w-100 py-3 px-5 d-flex justify-content-between">
-        <button type="button" id="register-btn" class="fw-bold btn btn-light border border-dark rounded py-1 px-5" onclick="irPara('vagas-recrutador', 'login')">Sair</button>
-        <button type="button" id="register-btn" class="fw-bold btn btn-dark py-1 px-3" onclick="irPara('vagas-recrutador', 'registrationVagas')">Cadastrar Vaga</button>
+      <div id="btn-vagas-trabalhador" class="py-3 px-5 d-none justify-content-center">
+            <button type="button" id="register-btn" class="btn btn-dark py-1 px-5" onclick="irPara('vagas', 'login')">Sair</button>
+      </div>
+      <div id="btn-vagas-recrutador" class="w-100 py-3 px-5 d-none justify-content-between">
+        <button type="button" id="register-btn" class="fw-bold btn btn-light border border-dark rounded py-1 px-5" onclick="irPara('vagas', 'login')">Sair</button>
+        <button type="button" id="register-btn" class="fw-bold btn btn-dark py-1 px-3" onclick="irPara('vagas', 'registrationVagas')">Cadastrar Vaga</button>
       </div>
     </div>
 

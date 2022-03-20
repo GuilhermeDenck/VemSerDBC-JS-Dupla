@@ -233,8 +233,10 @@ const validarLogin = async () => {
       USER_LOGADO = user;
       document.getElementById('email-input-login').value = '';
       document.getElementById('password-input-login').value = '';
+      const ulVagas = document.getElementById('lista-vagas');
+      ulVagas.textContent = '';
       listaVagas();
-      direcionarUser(user.tipo);
+      irPara('login', 'vagas');
     } else {
       alert('Senha incorreta');
     }
@@ -244,26 +246,6 @@ const validarLogin = async () => {
   }
 }
 
-const direcionarUser = (userTipo) => {
-  switch (userTipo) {
-    case 'trabalhador':
-      const ulVagas = document.getElementById('lista-vagas-trabalhador');
-      ulVagas.textContent = ''
-      listaVagas(ulVagas)
-      irPara('login', 'vagas-trabalhador');
-      break;
-    case 'recrutador':
-      const ulVagasRecrut = document.getElementById('lista-vagas-recrut');
-      ulVagasRecrut.textContent = ''
-      listaVagas(ulVagasRecrut)
-      irPara('login', 'vagas-recrutador');
-      break;
-    default:
-      alert('Tipo de usuário não encontrado');
-      break;
-  }
-  
-}
 
 const esqueceuSenha = async () => {
   try {
@@ -295,11 +277,11 @@ const validarCadastroVaga = async (event) => {
       vaga.id = idVaga;
       alert('Vaga cadastrada com sucesso!');
       
-      const ulVagas = document.getElementById('lista-vagas-recrut');
+      const ulVagas = document.getElementById('lista-vagas');
       ulVagas.textContent = '';
-      listaVagas(ulVagas);
+      listaVagas();
 
-      irPara('registrationVagas', 'vagas-recrutador');
+      irPara('registrationVagas', 'vagas');
       document.getElementById('titulo-input-registration').value = '';
       document.getElementById('descricao-input-registration').value = '';
       document.getElementById('remuneracao-input-registration').value = '';
@@ -371,7 +353,7 @@ const maskRemunaracao = (input, value) => {
   }
 }
 
-const listaVagas = async(ul) => {
+const listaVagas = async() => {
   const CLASS_UL = "py-4 px-5 container";
   const CLASS_BUTTON = "d-flex p-3 w-100 border border-dark rounded align-items-center justify-content-between btn-hover-vagas"
   const STYLE_BUTTON = "background: transparent; outline: none; border: none;";
@@ -381,6 +363,7 @@ const listaVagas = async(ul) => {
   try {
     const response = await axios.get(`http://localhost:3000/vagas`);
     response.data.forEach( elemento => {
+      const ul = document.getElementById('lista-vagas');
       const spanTitulo = document.createElement('span');
       spanTitulo.textContent = elemento.titulo;
       spanTitulo.setAttribute('class', CLASS_SPAN);
@@ -414,6 +397,22 @@ const listaVagas = async(ul) => {
 
       ul.appendChild(li);
       ul.setAttribute('class', CLASS_UL);
+
+
+      const btnTrabalhador = document.getElementById('btn-vagas-trabalhador');
+      const btnRecrutador = document.getElementById('btn-vagas-recrutador');
+      if(USER_LOGADO.tipo == 'trabalhador') {
+        btnRecrutador.classList.remove('d-flex');
+        btnRecrutador.classList.add('d-none');
+        btnTrabalhador.classList.remove('d-none');
+        btnTrabalhador.classList.add('d-flex');
+      }
+      if(USER_LOGADO.tipo == 'recrutador') {
+        btnTrabalhador.classList.remove('d-flex');
+        btnTrabalhador.classList.add('d-none');
+        btnRecrutador.classList.remove('d-none');
+        btnRecrutador.classList.add('d-flex');
+      }
     })
     
   } catch (error) {
@@ -430,10 +429,10 @@ const abrirDetalhes = async (event) => {
     const { id, titulo, descricao, remuneracao, candidatos } = vaga;
 
     if (USER_LOGADO.tipo === "trabalhador") {
-      irPara('vagas-trabalhador', 'detalhe-vagas');
+      irPara('vagas', 'detalhe-vagas');
     }
     if (USER_LOGADO.tipo === "recrutador") {
-      irPara('vagas-recrutador', 'detalhe-vagas-recrut');
+      irPara('vagas', 'detalhe-vagas-recrut');
     }
     
     if(USER_LOGADO === "trabalhador") {
