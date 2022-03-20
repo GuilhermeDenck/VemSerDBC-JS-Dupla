@@ -217,7 +217,9 @@ const cadastrarUsuario = async () => {
     document.getElementById("password-input-registration").value = '';
     
   } catch (error) {
-    console.log(`${error}, Ops, algo deu errado, por favor aguarde!`)
+    const msg = 'Erro ao cadastrar usuário!';
+    alert(msg)
+    console.log(msg, error)
   }
 }
 
@@ -242,8 +244,9 @@ const validarLogin = async () => {
       alert('Senha incorreta');
     }
   } catch (error) {
-    console.log('Email incorreto', error);
-    alert('Email incorreto');
+    const msg = 'Email incorreto';
+    alert(msg);
+    console.log(msg, error);
   }
 }
 
@@ -258,7 +261,9 @@ const esqueceuSenha = async () => {
 
     alert(`Sua senha é: ${senhaRecuparada}`);
   } catch (error) {
-    alert('Email não encontrado');
+    const msg = 'Email não encontrado';
+    alert(msg);
+    console.log(msg, error);
   }
 }
 
@@ -290,7 +295,9 @@ const validarCadastroVaga = async (event) => {
       alert('Erro! Confira os campos de cadastro!');
     }
   } catch (error) {
-    alert('Erro ao cadastrar vaga');
+    const msg = 'Erro ao cadastrar vaga!';
+    alert(msg);
+    console.log(msg, error);
   }
 }
 
@@ -416,7 +423,9 @@ const listaVagas = async() => {
     }
 
   } catch (error) {
-    console.log(`Erro ao listar vagas: ${error}`);
+    const msg = 'Erro ao listar vagas!';
+    alert(msg);
+    console.log(msg, error);
   }
 }
 
@@ -552,7 +561,9 @@ const abrirDetalhes = async (event) => {
     });
     }
   } catch (error) {
-    console.log('Erro ao carregar detalhes da vaga', error);
+    const msg = 'Erro ao carregar detalhes da vaga';
+    alert(msg);
+    console.log(msg, error);
   }
 }
 
@@ -567,7 +578,9 @@ const candidatarVaga = async () => {
     
     alert('Candidatura realizada com sucesso!');
   } catch (error) {
-    console.log(`Erro ao candidatar vaga: ${error}`);
+    const msg = 'Erro ao candidatar vaga';
+    alert(msg);
+    console.log(msg, error);
   }
 }
 
@@ -577,7 +590,9 @@ const adicionarCandidatura = async () => {
     const responsePostCandidatura = await axios.post(`${BASE_URL}/candidaturas`, candidaturas);
     return responsePostCandidatura;
   } catch (error) {
-    console.log(`Erro ao adicionar candidatura: ${error}`);
+    const msg = 'Erro ao adicionar candidatura';
+    alert(msg);
+    console.log(msg, error);
   }
 }
 
@@ -598,7 +613,9 @@ const adicionarNoUsuario = async (objCandidatura) => {
     const response = await axios.put(`${BASE_URL}/usuarios/${USER_LOGADO.id}`, UserAlterado);
     return response
   } catch (error) {
-    console.log(`Erro ao adicionar candidatura no usuario: ${error}`);
+    const msg = 'Erro ao adicionar candidatura no usuario';
+    alert(msg);
+    console.log(msg, error);
   }
 }
 
@@ -626,7 +643,9 @@ const adicionarUserNasVagas = async () => {
     console.log(response);
     return response;
   } catch (error) {
-    console.log('erro ao adicionar candidato nas candidaturas da vaga', error)
+    const msg = 'Erro ao adicionar candidato nas candidaturas da vaga';
+    alert(msg);
+    console.log(msg, error);
   }
 }
 
@@ -635,7 +654,9 @@ const getVagaById = (idVaga) => {
     const response = axios.get(`${BASE_URL}/vagas/${idVaga}`);
     return response;
   } catch (error) {
-    console.log(`Erro ao buscar vaga: ${error}`);
+    const msg = 'Erro ao buscar vaga';
+    alert(msg);
+    console.log(msg, error);
   }
 
 }
@@ -655,7 +676,8 @@ const getUserById = async (id) => {
     const response = await axios.get(`${BASE_URL}/usuarios/${id}`)
     return response;
   } catch (error) {
-    console.log('Erro ao buscar o usuario pelo id:', error)
+    const msg = 'Erro ao buscar usuario por id';
+    console.log(msg, error);
   }
 }
 
@@ -681,14 +703,18 @@ const excluirVaga = async () => {
       try {
         const deletarCandidatos = await axios.delete(`${BASE_URL}/candidaturas/${elemento}`);
       } catch (error) {
-        console.log('Erro ao deletar candidaturas', error);
+        const msg = 'Erro ao deletar candidaturas';
+        alert(msg);
+        console.log(msg, error);
       }
     });
   
     const deletarVagaDoCandidato = await deletarVagaCandidato(idCandidatosVaga, idVaga);
 
   } catch (error) {
-    console.log('erro ao deletar a vaga', error)
+    const msg = 'Erro ao deletar vaga';
+    alert(msg);
+    console.log(msg, error);
   }
 }
 
@@ -697,7 +723,9 @@ const getCandidaturas = async () => {
     const response = await axios.get(`${BASE_URL}/candidaturas`);
     return response;
   } catch (error) {
-    console.log('Erro ao pegar candidaturas:', error)
+    const msg = 'Erro ao buscar candidaturas';
+    alert(msg);
+    console.log(msg, error);
   }
 }
 
@@ -728,11 +756,15 @@ const deletarVagaCandidato = async (idCandidato, idVaga) => {
           let responsePut = await axios.put(`${BASE_URL}/usuarios/${candidato.id}`, candidatoAlterado);
           console.log(responsePut);
         } catch (error) {
-          console.log('erro ao deletar vaga do candidato', error);
+          const msg = 'Erro ao deletar vaga do candidato';
+          alert(msg);
+          console.log(msg, error);
         }
       });
   } catch (error) {
-    console.log('erro ao deletar vaga das candidaturas do usuário', error);
+    const msg = 'erro ao deletar vaga das candidaturas do usuário';
+    alert(msg);
+    console.log(msg, error);
   }
 }
 
@@ -767,6 +799,8 @@ const cancelarCandidatura = async () => {
     const updateVagaCandidatosResponse = await axios.put(`${BASE_URL}/vagas/${idDetalhe}`, newObjVaga);
     alert('Candidatura cancelada com sucesso!');
   } catch (error) {
-    
+    const msg = 'Erro ao cancelar candidatura';
+    alert(msg);
+    console.log(msg, error);
   }
 }
