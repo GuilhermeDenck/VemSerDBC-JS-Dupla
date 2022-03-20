@@ -535,6 +535,8 @@ const adicionarCandidatura = async () => {
 }
 
 const adicionarNoUsuario = async (objCandidatura) => {
+  const { candidaturas } = USER_LOGADO;
+  candidaturas.push(objCandidatura);
   try {
     const UserAlterado = {
       id: USER_LOGADO.id,
@@ -543,7 +545,7 @@ const adicionarNoUsuario = async (objCandidatura) => {
       dataNascimento: USER_LOGADO.dataNascimento,
       email: USER_LOGADO.email,
       senha: USER_LOGADO.senha,
-      candidaturas: [objCandidatura]
+      candidaturas: candidaturas
     }
 
     const response = await axios.put(`http://localhost:3000/usuarios/${USER_LOGADO.id}`, UserAlterado);
@@ -611,15 +613,27 @@ const getUserById = async (id) => {
 
 const excluirVaga = async () => {
 try {
-  const deletarVagas = await axios.delete(`http://localhost:3000/vagas/${idDetalhe}`);
   const pegaCandidaturas = await getCandidaturas();
-  pegaCandidaturas.data.forEach((elemento) => {
-    console.log(elemento.idvaga);
-    console.log(idDetalhe);
-    if (elemento.idvaga == idDetalhe) {
-      const deletarCandidatos = axios.delete(`http://localhost:3000/candidaturas?idvaga=${elemento.idvaga}`);
+  let idVaga;
+
+  for(const i of pegaCandidaturas.data){
+    if(i.idvaga === idDetalhe){
+      idVaga = i.idvaga;
     }
-  })
+  }
+
+
+  const deletarCandidatos = await axios.delete(`http://localhost:3000/candidaturas?idvaga=${idVaga}`);
+
+  const deletarVagas = await axios.delete(`http://localhost:3000/vagas/${idDetalhe}`);
+
+  // pegaCandidaturas.data.forEach((elemento) => {
+  //   console.log(elemento.idvaga);
+  //   console.log(idDetalhe);
+  //   if (elemento.idvaga == idDetalhe) {
+  //     const deletarCandidatos = axios.delete(`http://localhost:3000/candidaturas?idvaga=${elemento.idvaga}`);
+  //   }
+  // })
 } catch (error) {
   console.log('erro ao deletar a vaga', error)
 }

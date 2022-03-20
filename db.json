@@ -9,6 +9,12 @@
       "senha": "123",
       "candidaturas": [
         {
+          "idvaga": "1",
+          "idcandidato": 1,
+          "reprovado": false,
+          "id": 1
+        },
+        {
           "idvaga": "2",
           "idcandidato": 1,
           "reprovado": false,
@@ -44,8 +50,8 @@
     {
       "id": 1,
       "titulo": "aaaaa",
-      "descricao": "aaaaa",
-      "remuneracao": "R$ 1111",
+      "descricao": "aaaaaaa",
+      "remuneracao": "1111111",
       "candidatos": [
         {
           "id": 1,
@@ -54,6 +60,27 @@
           "email": "alissonmanica@gmail.com"
         }
       ]
+    },
+    {
+      "id": 2,
+      "titulo": "bbbbb",
+      "descricao": "bbbbbbbb",
+      "remuneracao": "22222222222",
+      "candidatos": [
+        {
+          "id": 1,
+          "nome": "Alisson Manica",
+          "dataNascimento": "22/03/2000",
+          "email": "alissonmanica@gmail.com"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "titulo": "cccccc",
+      "descricao": "cccccccccc",
+      "remuneracao": "3333333333",
+      "candidatos": []
     }
   ]
 }
