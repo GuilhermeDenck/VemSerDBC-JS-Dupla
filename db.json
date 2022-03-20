@@ -9,10 +9,10 @@
       "senha": "123",
       "candidaturas": [
         {
-          "idVaga": "1",
-          "idCandidato": 1,
+          "idvaga": "2",
+          "idcandidato": 1,
           "reprovado": false,
-          "id": 1
+          "id": 2
         }
       ]
     },
@@ -28,18 +28,24 @@
   ],
   "candidaturas": [
     {
-      "idVaga": "1",
-      "idCandidato": 1,
+      "idvaga": "1",
+      "idcandidato": 1,
       "reprovado": false,
       "id": 1
+    },
+    {
+      "idvaga": "2",
+      "idcandidato": 1,
+      "reprovado": false,
+      "id": 2
     }
   ],
   "vagas": [
     {
       "id": 1,
-      "titulo": "Teste",
-      "descricao": "teste",
-      "remuneracao": "R$ 5000.00",
+      "titulo": "aaaaa",
+      "descricao": "aaaaa",
+      "remuneracao": "R$ 1111",
       "candidatos": [
         {
           "id": 1,

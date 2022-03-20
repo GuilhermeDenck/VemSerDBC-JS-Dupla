@@ -21,13 +21,13 @@ class Usuario {
 }
 
 class Candidaturas {
-  idVaga;
-  idCandidato;
+  idvaga;
+  idcandidato;
   reprovado;
 
-  constructor(idVaga, idCandidato, reprovado) {
-    this.idVaga = idVaga;
-    this.idCandidato = idCandidato;
+  constructor(idvaga, idcandidato, reprovado) {
+    this.idvaga = idvaga;
+    this.idcandidato = idcandidato;
     this.reprovado = reprovado;
   }
 }
@@ -399,22 +399,24 @@ const listaVagas = async() => {
       ul.setAttribute('class', CLASS_UL);
 
 
-      const btnTrabalhador = document.getElementById('btn-vagas-trabalhador');
-      const btnRecrutador = document.getElementById('btn-vagas-recrutador');
-      if(USER_LOGADO.tipo == 'trabalhador') {
-        btnRecrutador.classList.remove('d-flex');
-        btnRecrutador.classList.add('d-none');
-        btnTrabalhador.classList.remove('d-none');
-        btnTrabalhador.classList.add('d-flex');
-      }
-      if(USER_LOGADO.tipo == 'recrutador') {
-        btnTrabalhador.classList.remove('d-flex');
-        btnTrabalhador.classList.add('d-none');
-        btnRecrutador.classList.remove('d-none');
-        btnRecrutador.classList.add('d-flex');
-      }
+      
     })
     
+    const btnTrabalhador = document.getElementById('btn-vagas-trabalhador');
+    const btnRecrutador = document.getElementById('btn-vagas-recrutador');
+    if(USER_LOGADO.tipo == 'trabalhador') {
+      btnRecrutador.classList.remove('d-flex');
+      btnRecrutador.classList.add('d-none');
+      btnTrabalhador.classList.remove('d-none');
+      btnTrabalhador.classList.add('d-flex');
+    }
+    if(USER_LOGADO.tipo == 'recrutador') {
+      btnTrabalhador.classList.remove('d-flex');
+      btnTrabalhador.classList.add('d-none');
+      btnRecrutador.classList.remove('d-none');
+      btnRecrutador.classList.add('d-flex');
+    }
+
   } catch (error) {
     console.log(`Erro ao listar vagas: ${error}`);
   }
@@ -440,7 +442,7 @@ const abrirDetalhes = async (event) => {
     spanRemuneracaoVaga.textContent = vaga.remuneracao;
 
     const STYLE_LI_CANDITADOS = "d-flex justify-content-between border border-dark py-2 ps-2 pe-4";
-    const STYLE_SPAN_DATA = "pe-3";
+    const STYLE_SPAN_DATA = "py-2";
 
     const ulTrabalhador = document.getElementById('lista-candidatos-vaga');
     ulTrabalhador.textContent = '';
@@ -464,6 +466,7 @@ const abrirDetalhes = async (event) => {
         const li = document.createElement('li');
 
         spanNome.textContent = candidato.nome;
+        spanNome.setAttribute('class', STYLE_SPAN_DATA)
         spanDataNacimento.textContent = candidato.dataNascimento;
         spanDataNacimento.setAttribute('class', STYLE_SPAN_DATA);
         li.append(spanNome, spanDataNacimento);
@@ -480,13 +483,15 @@ const abrirDetalhes = async (event) => {
 
     const STYLE_BTN_REPROVAR = "btn btn-danger";
     vaga.candidatos.forEach(candidato => {
+      let idButton = `btn-reprova-${candidato.id}`
       const spanNome = document.createElement('span');
       const spanDataNacimento = document.createElement('span');
       const btnReprovar = document.createElement('button');
       const li = document.createElement('li');
+      btnReprovar.setAttribute('id', idButton)
       btnReprovar.setAttribute('class', STYLE_BTN_REPROVAR);
       btnReprovar.textContent = 'Reprovar';
-      btnReprovar.setAttribute('onclick', 'reprovarCandidato(id)');
+      btnReprovar.setAttribute('onclick', 'reprovarCandidato(event)');
       
 
       spanNome.textContent = candidato.nome;
@@ -495,10 +500,9 @@ const abrirDetalhes = async (event) => {
       li.append(spanNome, spanDataNacimento, btnReprovar);
       li.setAttribute('class', STYLE_LI_CANDITADOS);
       
-      console.log(candidato.candidaturas);
       //setar id para Li para poder reprovar o cara li.setAttribute('id', );
       ulRecrutador.appendChild(li);
-      })
+    });
     }
   } catch (error) {
     console.log('Erro ao carregar detalhes da vaga', error);
@@ -569,7 +573,7 @@ const adicionarUserNasVagas = async () => {
     console.log(response);
     return response;
   } catch (error) {
-    
+    console.log('erro ao adicionar candidato nas candidaturas da vaga', error)
   }
 }
 
@@ -583,6 +587,49 @@ const getVagaById = (idVaga) => {
 
 }
 
-const reprovarCandidato = () => {
-  console.log('teste reprovar')
+const reprovarCandidato = (event) => {
+  const idBtn = event.target.id;
+  const idCandidato = idBtn.split('-')[2];
+  console.log(idCandidato);
+
+
+  document.getElementById(idBtn).disabled = true;
+  console.log('teste reprovar');
+}
+
+const getUserById = async (id) => {
+  try {
+    const response = await axios.get(`http://localhost:3000/usuarios/${id}`)
+    return response;
+  } catch (error) {
+    console.log('Erro ao buscar o usuario pelo id:', error)
+  }
+}
+
+
+
+
+const excluirVaga = async () => {
+try {
+  const deletarVagas = await axios.delete(`http://localhost:3000/vagas/${idDetalhe}`);
+  const pegaCandidaturas = await getCandidaturas();
+  pegaCandidaturas.data.forEach((elemento) => {
+    console.log(elemento.idvaga);
+    console.log(idDetalhe);
+    if (elemento.idvaga == idDetalhe) {
+      const deletarCandidatos = axios.delete(`http://localhost:3000/candidaturas?idvaga=${elemento.idvaga}`);
+    }
+  })
+} catch (error) {
+  console.log('erro ao deletar a vaga', error)
+}
+}
+
+const getCandidaturas = async () => {
+try {
+  const response = await axios.get(`http://localhost:3000/candidaturas`);
+  return response;
+} catch (error) {
+  console.log('Erro ao pegar candidaturas:', error)
+}
 }
