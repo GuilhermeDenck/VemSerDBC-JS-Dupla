@@ -1,4 +1,5 @@
 let USER_LOGADO;
+const BASE_URL = 'http://localhost:3000';
 class Usuario {
   id;
   tipo;
@@ -205,7 +206,7 @@ const cadastrarUsuario = async () => {
   const nomeFormatado = campoNome.split(' ').map( nome => nome.charAt(0).toUpperCase() + nome.slice(1).toLowerCase() ).join(' ');
   const usuario = new Usuario (null, campoTipo, nomeFormatado, campoData, campoEmail, campoSenha, []);
   try {
-    const response = await axios.post(`http://localhost:3000/usuarios`, usuario);
+    const response = await axios.post(`${BASE_URL}/usuarios`, usuario);
     let idUser = response.data.id;
     usuario.id = idUser;
 
@@ -216,7 +217,9 @@ const cadastrarUsuario = async () => {
     document.getElementById("password-input-registration").value = '';
     
   } catch (error) {
-    console.log(`${error}, Ops, algo deu errado, por favor aguarde!`)
+    const msg = 'Erro ao cadastrar usuário!';
+    alert(msg)
+    console.log(msg, error)
   }
 }
 
@@ -224,7 +227,7 @@ const validarLogin = async () => {
   const emailDigitado = document.getElementById('email-input-login').value;
   const senhaDigitada = document.getElementById('password-input-login').value;
   try {
-    const response = await axios.get(`http://localhost:3000/usuarios?email=${emailDigitado}`);
+    const response = await axios.get(`${BASE_URL}/usuarios?email=${emailDigitado}`);
 
     const user = response.data[0];
 
@@ -241,8 +244,9 @@ const validarLogin = async () => {
       alert('Senha incorreta');
     }
   } catch (error) {
-    console.log('Email incorreto', error);
-    alert('Email incorreto');
+    const msg = 'Email incorreto';
+    alert(msg);
+    console.log(msg, error);
   }
 }
 
@@ -251,13 +255,15 @@ const esqueceuSenha = async () => {
   try {
     const email = prompt('Digite seu e-mail');
     alert('Pesquisando aguarde...');
-    const response = await axios.get(`http://localhost:3000/usuarios?email=${email}`);
+    const response = await axios.get(`${BASE_URL}/usuarios?email=${email}`);
 
     const senhaRecuparada = response.data[0].senha;
 
     alert(`Sua senha é: ${senhaRecuparada}`);
   } catch (error) {
-    alert('Email não encontrado');
+    const msg = 'Email não encontrado';
+    alert(msg);
+    console.log(msg, error);
   }
 }
 
@@ -272,7 +278,7 @@ const validarCadastroVaga = async (event) => {
 
       const vaga = new Vaga(null, titulo, descricao, remuneracao, []);
 
-      const response = await axios.post(`http://localhost:3000/vagas`, vaga);
+      const response = await axios.post(`${BASE_URL}/vagas`, vaga);
       let idVaga = response.data.id;
       vaga.id = idVaga;
       alert('Vaga cadastrada com sucesso!');
@@ -289,7 +295,9 @@ const validarCadastroVaga = async (event) => {
       alert('Erro! Confira os campos de cadastro!');
     }
   } catch (error) {
-    alert('Erro ao cadastrar vaga');
+    const msg = 'Erro ao cadastrar vaga!';
+    alert(msg);
+    console.log(msg, error);
   }
 }
 
@@ -361,7 +369,7 @@ const listaVagas = async() => {
   const CLASS_P = "fw-bold m-0";
 
   try {
-    const response = await axios.get(`http://localhost:3000/vagas`);
+    const response = await axios.get(`${BASE_URL}/vagas`);
     response.data.forEach( elemento => {
       const ul = document.getElementById('lista-vagas');
       const spanTitulo = document.createElement('span');
@@ -415,7 +423,9 @@ const listaVagas = async() => {
     }
 
   } catch (error) {
-    console.log(`Erro ao listar vagas: ${error}`);
+    const msg = 'Erro ao listar vagas!';
+    alert(msg);
+    console.log(msg, error);
   }
 }
 
@@ -423,7 +433,7 @@ let idDetalhe;
 const abrirDetalhes = async (event) => {
   idDetalhe = event.target.id;
   try {
-    const response = await axios.get(`http://localhost:3000/vagas?id=${idDetalhe}`);
+    const response = await axios.get(`${BASE_URL}/vagas?id=${idDetalhe}`);
     const vaga = response.data[0];
     const { id, titulo, descricao, remuneracao, candidatos } = vaga;
 
@@ -464,12 +474,61 @@ const abrirDetalhes = async (event) => {
 
         spanNome.textContent = candidato.nome;
         spanNome.setAttribute('class', STYLE_SPAN_DATA)
+        spanNome.setAttribute('id', candidato.nome);
         spanDataNacimento.textContent = candidato.dataNascimento;
         spanDataNacimento.setAttribute('class', STYLE_SPAN_DATA);
         li.append(spanNome, spanDataNacimento);
         li.setAttribute('class', STYLE_LI_CANDITADOS);
         ulTrabalhador.appendChild(li);
       });
+
+      const DIVBTN_STYLE = "py-3 w-100 d-flex justify-content-between";
+      const BTN_VOLTAR_STYLE = "btn btn-secondary py-1 px-4";
+      const BTN_CANCELAR_STYLE = "btn btn-danger py-1 px-4";
+      const BTN_CANDIDATAR_STYLE = "btn btn-dark py-1 px-4";
+
+      const divBtn = document.createElement('div');
+      divBtn.setAttribute('class', DIVBTN_STYLE);
+      const btnVoltar = document.createElement('button');
+      btnVoltar.setAttribute('class', BTN_VOLTAR_STYLE);
+      btnVoltar.textContent = 'Voltar';
+      btnVoltar.setAttribute('onclick', 'irPara("detalhe-vagas", "vagas")');
+
+  
+      let newArrayCandidaturas = USER_LOGADO.candidaturas.find(elemento => elemento.idvaga == idDetalhe);
+
+      if(newArrayCandidaturas) {
+        const btnCancelarCandidatura = document.createElement('button');
+        btnCancelarCandidatura.setAttribute('id', 'btn-cancelar-candidatura');
+        btnCancelarCandidatura.setAttribute('class', BTN_CANCELAR_STYLE);
+        btnCancelarCandidatura.textContent = 'Cancelar Candidatura';
+        btnCancelarCandidatura.setAttribute('onclick', 'cancelarCandidatura()');
+        if(newArrayCandidaturas.reprovado == true) {
+          const spanUser = document.getElementById(USER_LOGADO.nome);
+          spanUser.setAttribute('class', 'text-danger py-2');
+      
+          btnCancelarCandidatura.disabled = true;
+        } else {
+          btnCancelarCandidatura.disabled = false;
+        }
+        divBtn.append(btnVoltar, btnCancelarCandidatura);
+        divTrabalhador.appendChild(divBtn);
+      } else {
+        const btnCandidatar = document.createElement('button');
+        btnCandidatar.setAttribute('id', 'btn-candidatar');
+        btnCandidatar.setAttribute('class', BTN_CANDIDATAR_STYLE);
+        btnCandidatar.textContent = 'Candidatar-se';
+        btnCandidatar.setAttribute('onclick', 'candidatarVaga()');
+
+        divBtn.append(btnVoltar, btnCandidatar);
+        divTrabalhador.appendChild(divBtn);
+      }
+
+
+      // <div class="py-3 w-100 d-flex justify-content-between">
+      //   <button type="button" onclick="irPara('detalhe-vagas', 'vagas')" class="btn btn-secondary py-1 px-4">Voltar</button>
+      //   <button type="button" id="btn-candidatar" class="btn btn-dark py-1 px-4" onclick="candidatarVaga()">Candidatar-se</button>
+      // </div>
     }
 
     if(USER_LOGADO.tipo == 'recrutador') {
@@ -488,7 +547,7 @@ const abrirDetalhes = async (event) => {
       btnReprovar.setAttribute('id', idButton)
       btnReprovar.setAttribute('class', STYLE_BTN_REPROVAR);
       btnReprovar.textContent = 'Reprovar';
-      btnReprovar.setAttribute('onclick', 'reprovarCandidato(event)');
+      btnReprovar.setAttribute('onclick', 'reprovarCandidato()');
       
 
       spanNome.textContent = candidato.nome;
@@ -504,7 +563,9 @@ const abrirDetalhes = async (event) => {
     });
     }
   } catch (error) {
-    console.log('Erro ao carregar detalhes da vaga', error);
+    const msg = 'Erro ao carregar detalhes da vaga';
+    alert(msg);
+    console.log(msg, error);
   }
 }
 
@@ -517,19 +578,23 @@ const candidatarVaga = async () => {
 
     const adicionarCandidatoNasVagas = await adicionarUserNasVagas();
     
-
+    alert('Candidatura realizada com sucesso!');
   } catch (error) {
-    console.log(`Erro ao candidatar vaga: ${error}`);
+    const msg = 'Erro ao candidatar vaga';
+    alert(msg);
+    console.log(msg, error);
   }
 }
 
 const adicionarCandidatura = async () => {
   const candidaturas = new Candidaturas(idDetalhe, USER_LOGADO.id, false);
   try {
-    const responsePostCandidatura = await axios.post('http://localhost:3000/candidaturas', candidaturas);
+    const responsePostCandidatura = await axios.post(`${BASE_URL}/candidaturas`, candidaturas);
     return responsePostCandidatura;
   } catch (error) {
-    console.log(`Erro ao adicionar candidatura: ${error}`);
+    const msg = 'Erro ao adicionar candidatura';
+    alert(msg);
+    console.log(msg, error);
   }
 }
 
@@ -547,10 +612,12 @@ const adicionarNoUsuario = async (objCandidatura) => {
       candidaturas: candidaturas
     }
 
-    const response = await axios.put(`http://localhost:3000/usuarios/${USER_LOGADO.id}`, UserAlterado);
+    const response = await axios.put(`${BASE_URL}/usuarios/${USER_LOGADO.id}`, UserAlterado);
     return response
   } catch (error) {
-    console.log(`Erro ao adicionar candidatura no usuario: ${error}`);
+    const msg = 'Erro ao adicionar candidatura no usuario';
+    alert(msg);
+    console.log(msg, error);
   }
 }
 
@@ -574,20 +641,24 @@ const adicionarUserNasVagas = async () => {
       remuneracao: remuneracao,
       candidatos: candidatos
     }
-    const response = await axios.put(`http://localhost:3000/vagas/${id}`, vagaAlterada);
+    const response = await axios.put(`${BASE_URL}/vagas/${id}`, vagaAlterada);
     console.log(response);
     return response;
   } catch (error) {
-    console.log('erro ao adicionar candidato nas candidaturas da vaga', error)
+    const msg = 'Erro ao adicionar candidato nas candidaturas da vaga';
+    alert(msg);
+    console.log(msg, error);
   }
 }
 
 const getVagaById = (idVaga) => {
   try {
-    const response = axios.get(`http://localhost:3000/vagas/${idVaga}`);
+    const response = axios.get(`${BASE_URL}/vagas/${idVaga}`);
     return response;
   } catch (error) {
-    console.log(`Erro ao buscar vaga: ${error}`);
+    const msg = 'Erro ao buscar vaga';
+    alert(msg);
+    console.log(msg, error);
   }
 
 }
@@ -604,88 +675,134 @@ const reprovarCandidato = (event) => {
 
 const getUserById = async (id) => {
   try {
-    const response = await axios.get(`http://localhost:3000/usuarios/${id}`)
+    const response = await axios.get(`${BASE_URL}/usuarios/${id}`)
     return response;
   } catch (error) {
-    console.log('Erro ao buscar o usuario pelo id:', error)
+    const msg = 'Erro ao buscar usuario por id';
+    console.log(msg, error);
   }
 }
 
-
-
-
 const excluirVaga = async () => {
+  console.log('idDetalhe ->', idDetalhe);
   try {
     const pegaCandidaturas = await getCandidaturas();
+    let idVagasCandidatura = [];
+    let idCandidatosVaga = [];
     let idVaga;
-    let idCandidatoVaga = [];
 
     for(const i of pegaCandidaturas.data){
-      if(i.idvaga === idDetalhe){
-        idVaga = i.id;
-        idCandidatoVaga.push(i.idcandidato);
+      if(i.idvaga == idDetalhe){
+        idVaga = i.idvaga;
+        idVagasCandidatura.push(i.id);
+        idCandidatosVaga.push(i.idcandidato);
       }
     }
 
-    const deletarCandidatos = await axios.delete(`http://localhost:3000/candidaturas/${idVaga}`);
+    const deletarVagas = await axios.delete(`${BASE_URL}/vagas/${idDetalhe}`);
 
-    const deletarVagas = await axios.delete(`http://localhost:3000/vagas/${idDetalhe}`);
-
-    const deletarVagaDoCandidato = await deletarVagaCandidato(idCandidatoVaga, idVaga);
+    idVagasCandidatura.forEach(async (elemento) => {
+      try {
+        const deletarCandidatos = await axios.delete(`${BASE_URL}/candidaturas/${elemento}`);
+      } catch (error) {
+        const msg = 'Erro ao deletar candidaturas';
+        alert(msg);
+        console.log(msg, error);
+      }
+    });
+  
+    const deletarVagaDoCandidato = await deletarVagaCandidato(idCandidatosVaga, idVaga);
 
   } catch (error) {
-    console.log('erro ao deletar a vaga', error)
+    const msg = 'Erro ao deletar vaga';
+    alert(msg);
+    console.log(msg, error);
   }
 }
 
 const getCandidaturas = async () => {
   try {
-    const response = await axios.get(`http://localhost:3000/candidaturas`);
+    const response = await axios.get(`${BASE_URL}/candidaturas`);
     return response;
   } catch (error) {
-    console.log('Erro ao pegar candidaturas:', error)
+    const msg = 'Erro ao buscar candidaturas';
+    alert(msg);
+    console.log(msg, error);
   }
 }
 
 const deletarVagaCandidato = async (idCandidato, idVaga) => {
   try {
-      let arrayCandidatos = [];
-      console.log('entrei no deletar vaga candidato');
-      idCandidato.forEach( async id => {
-        try {
-          console.log(id)
+    console.log('entrei no deletar vaga candidato');
+    idCandidato.forEach(async (elemento) => {
+      try {
+          idUser = elemento;
           console.log('entrei no forEach');
-          let response = await axios.get(`http://localhost:3000/usuarios/${id}`);
-          console.log(response.data)
-          arrayCandidatos.push(response.data);
-        } catch (error) {
-          console.log('erro ao deletar vaga do candidato', error);
-        }
-      });
+          let response = await axios.get(`${BASE_URL}/usuarios/${idUser}`);
+          let candidato = response.data;
 
-      console.log('sai do forEach');
-      console.log(arrayCandidatos);
-      arrayCandidatos.forEach(async (user) => {
-        console.log('entrei no forEach do arrayCandidatos');
-        let newCandidaturasUser = user.candidaturas.filter(candidato => candidato.id != idVaga );
-        console.log(newCandidaturasUser);
-        try {
-          const newCandidatura = {
-            id: user.id,
-            tipo: user.tipo,
-            nome: user.nome,
-            dataNascimento: user.dataNascimento,
-            email: user.email,
-            senha: user.senha,
-            candidaturas: newCandidaturasUser
+          console.log('idVaga antes do filter ->', idVaga);
+          let newCandidaturaUser = candidato.candidaturas.filter(candidatura => candidatura.idvaga != idVaga );
+          console.log(newCandidaturaUser);
+
+          const candidatoAlterado = {
+            id: candidato.id,
+            tipo: candidato.tipo,
+            nome: candidato.nome,
+            dataNascimento: candidato.dataNascimento,
+            email: candidato.email,
+            senha: candidato.senha,
+            candidaturas: newCandidaturaUser
           }
-          const response = await axios.put(`http://localhost:3000/usuarios/${user.id}`, newCandidatura);
-          return response
+
+          let responsePut = await axios.put(`${BASE_URL}/usuarios/${candidato.id}`, candidatoAlterado);
+          console.log(responsePut);
         } catch (error) {
-          console.log('erro ao deletar vaga do candidato', error);
+          const msg = 'Erro ao deletar vaga do candidato';
+          alert(msg);
+          console.log(msg, error);
         }
       });
   } catch (error) {
-    console.log('erro ao deletar vaga das candidaturas do usuário', error);
+    const msg = 'erro ao deletar vaga das candidaturas do usuário';
+    alert(msg);
+    console.log(msg, error);
+  }
+}
+
+const cancelarCandidatura = async () => {
+  let candidatura = USER_LOGADO.candidaturas.find(elemento => elemento.idvaga == idDetalhe);
+  
+  let newArrayCandidatura = USER_LOGADO.candidaturas.filter(elemento => elemento.id != candidatura.id);
+
+  const newUserLogado = {
+    id: USER_LOGADO.id,
+    tipo: USER_LOGADO.tipo,
+    nome: USER_LOGADO.nome,
+    dataNascimento: USER_LOGADO.dataNascimento,
+    email: USER_LOGADO.email,
+    senha: USER_LOGADO.senha,
+    candidaturas: newArrayCandidatura
+  }
+  try {
+    const deleteCandidaturaResponse = await axios.delete(`${BASE_URL}/candidaturas/${candidatura.id}`);
+    const updateUserCandidaturaResponse = await axios.put(`${BASE_URL}/usuarios/${USER_LOGADO.id}`, newUserLogado);
+
+    const objVaga = await getVagaById(idDetalhe);
+
+    const newObjVaga = {
+      id: objVaga.data.id,
+      titulo: objVaga.data.titulo,
+      descricao: objVaga.data.descricao,
+      remuneracao: objVaga.data.remuneracao,
+      candidatos: objVaga.data.candidatos.filter(elemento => elemento.id != USER_LOGADO.id)
+    }
+
+    const updateVagaCandidatosResponse = await axios.put(`${BASE_URL}/vagas/${idDetalhe}`, newObjVaga);
+    alert('Candidatura cancelada com sucesso!');
+  } catch (error) {
+    const msg = 'Erro ao cancelar candidatura';
+    alert(msg);
+    console.log(msg, error);
   }
 }
