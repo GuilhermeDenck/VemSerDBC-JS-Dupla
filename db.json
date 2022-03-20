@@ -12,7 +12,7 @@
           "idVaga": "1",
           "idCandidato": 1,
           "reprovado": false,
-          "id": 4
+          "id": 2
         }
       ]
     },
@@ -32,6 +32,12 @@
       "idCandidato": 1,
       "reprovado": false,
       "id": 1
+    },
+    {
+      "idVaga": "1",
+      "idCandidato": 1,
+      "reprovado": false,
+      "id": 2
     }
   ],
   "vagas": [
@@ -50,10 +56,10 @@
           "senha": "123",
           "candidaturas": [
             {
-              "idVaga": "3",
+              "idVaga": "1",
               "idCandidato": 1,
               "reprovado": false,
-              "id": 3
+              "id": 4
             }
           ]
         }
