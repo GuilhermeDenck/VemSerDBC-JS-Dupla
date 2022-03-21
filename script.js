@@ -559,16 +559,10 @@ const abrirDetalhes = async (event) => {
       divRecrutador.classList.add('d-flex');
 
     const STYLE_BTN_REPROVAR = "btn btn-danger";
+
+    const candidaturas = await getCandidaturas();  
+
     vaga.candidatos.forEach( async (candidato) => {
-
-      try {
-        console.log(vaga.candidatos);
-        const candidaturas = await getCandidaturas();  
-        console.log(candidaturas.data);
-      } catch (error) {
-        console.log('Erro ao buscar candidaturas', error);
-      }
-
       let idButton = `btn-reprova-${candidato.id}`
       const spanNome = document.createElement('span');
       const spanDataNacimento = document.createElement('span');
@@ -578,14 +572,25 @@ const abrirDetalhes = async (event) => {
       btnReprovar.setAttribute('class', STYLE_BTN_REPROVAR);
       btnReprovar.textContent = 'Reprovar';
       btnReprovar.setAttribute('onclick', 'reprovarCandidato(event)');
-      
 
+      
       spanNome.textContent = candidato.nome;
       spanNome.setAttribute('id', `candidato-${candidato.id}`)
       spanNome.setAttribute('class', STYLE_SPAN_DATA)
       spanDataNacimento.textContent = candidato.dataNascimento;
       spanDataNacimento.setAttribute('class', STYLE_SPAN_DATA);
       li.append(spanNome, spanDataNacimento, btnReprovar);
+
+      candidaturas.data.forEach( element => {
+        if(element.id == candidato.id) {
+          console.log(element);
+          if(element.reprovado == true) {
+            btnReprovar.setAttribute('disabled', '');
+            spanNome.setAttribute('class', 'text-danger py-2');
+          }
+        }
+      });
+
       li.setAttribute('class', STYLE_LI_CANDITADOS);
     
       ulRecrutador.appendChild(li);
