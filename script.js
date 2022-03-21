@@ -49,22 +49,6 @@ class Vaga {
   }
 }
 
-
-const verificaTempo = () => {
-  console.time()
-
-for(let i = 0; i < 100000; i++) {
-    
-}
-
-const time = console.timeEnd()
-}
-
-
-
-
-
-
 //#region VALIDAR NOME
 
 const validarNome = () => {
@@ -395,6 +379,16 @@ const listaVagas = async() => {
 
   try {
     const response = await axios.get(`${BASE_URL}/vagas`);
+
+    if(response.data.length == 0) {
+      const ulVagas = document.getElementById('lista-vagas');
+      const h2 = document.createElement('h2');
+      h2.textContent = 'Nenhuma vaga cadastrada';
+      h2.setAttribute('class', 'text-center');
+
+      ulVagas.appendChild(h2);
+    }
+
     response.data.forEach( elemento => {
       const ul = document.getElementById('lista-vagas');
       const spanTitulo = document.createElement('span');
@@ -430,7 +424,7 @@ const listaVagas = async() => {
 
       ul.appendChild(li);
       ul.setAttribute('class', CLASS_UL);
-    })
+    });
     
     const btnTrabalhador = document.getElementById('btn-vagas-trabalhador');
     const btnRecrutador = document.getElementById('btn-vagas-recrutador');
@@ -460,7 +454,12 @@ const abrirDetalhes = async (event) => {
   try {
     const response = await axios.get(`${BASE_URL}/vagas?id=${idDetalhe}`);
     const vaga = response.data[0];
+
+    console.log(vaga);
+
     const { id, titulo, descricao, remuneracao, candidatos } = vaga;
+
+    console.log(id);
 
     irPara('vagas', 'detalhe-vagas');
     
@@ -485,6 +484,9 @@ const abrirDetalhes = async (event) => {
     const divTrabalhador = document.getElementById('candidatos-trabalhador');
 
     const divRecrutador = document.getElementById('candidatos-recrutador');
+
+
+
     if(USER_LOGADO.tipo == 'trabalhador') {
       divRecrutador.classList.remove('d-flex');
       divRecrutador.classList.add('d-none');
@@ -520,8 +522,6 @@ const abrirDetalhes = async (event) => {
       btnVoltar.textContent = 'Voltar';
       btnVoltar.setAttribute('onclick', 'irPara("detalhe-vagas", "vagas")');
 
-      console.log(USER_LOGADO);
-
       let newArrayCandidaturas = USER_LOGADO.candidaturas.find(elemento => elemento.idvaga == idDetalhe);
       if(newArrayCandidaturas) {
         const btnCancelarCandidatura = document.createElement('button');
@@ -547,7 +547,7 @@ const abrirDetalhes = async (event) => {
         btnCandidatar.textContent = 'Candidatar-se';
         btnCandidatar.setAttribute('onclick', 'candidatarVaga()');
         divBtn.append(btnVoltar, btnCandidatar);
-        divButtonsTrabalhador.textContent=''
+        divButtonsTrabalhador.textContent = '';
         divButtonsTrabalhador.appendChild(divBtn);
       }
     }
