@@ -458,14 +458,6 @@ const abrirDetalhes = async (event) => {
     setTimeout(() => {
       irPara('vagas', 'detalhe-vagas');
     }, 500);
-
-    console.log(vaga);
-
-    const { id, titulo, descricao, remuneracao, candidatos } = vaga;
-
-    console.log(id);
-
-    
     
     const spanTituloVaga = document.getElementById('span-titulo-vaga');
     spanTituloVaga.textContent = vaga.titulo;
@@ -489,21 +481,9 @@ const abrirDetalhes = async (event) => {
 
     const divRecrutador = document.getElementById('candidatos-recrutador');
 
-    if(candidatos.length == 0) {
-      const containerTrabalhador = document.getElementById('container-candidatos-trabalhador');
-      const containerRecrutador = document.getElementById('container-candidatos-recrutador');
-
-      containerTrabalhador.textContent = '';
-      containerRecrutador.textContent = '';
-      containerRecrutador.setAttribute('class', 'w-100 p-0 mt-3 bg bg-dark text-white');
-      containerTrabalhador.setAttribute('class', 'w-100 p-0 mt-3 bg bg-dark text-white');
-
-      const h3 = document.createElement('h3');
-      h3.textContent = 'Nenhum candidato cadastrado';
-      h3.setAttribute('class', 'text-center ms-5');
-
-      containerTrabalhador.appendChild(h3);
-      containerRecrutador.appendChild(h3);
+    if(vaga.candidatos.length == 0) {
+      ulTrabalhador.textContent = 'Não há candidatos para esta vaga';
+      ulRecrutador.textContent = 'Não há candidatos para esta vaga';
     }
 
     if(USER_LOGADO.tipo == 'trabalhador') {
@@ -557,7 +537,7 @@ const abrirDetalhes = async (event) => {
           btnCancelarCandidatura.disabled = false;
         }
         divBtn.append(btnVoltar, btnCancelarCandidatura);
-        divButtonsTrabalhador.textContent=''
+        divButtonsTrabalhador.textContent = '';
         divButtonsTrabalhador.appendChild(divBtn);
       } else {
         const btnCandidatar = document.createElement('button');
@@ -566,7 +546,7 @@ const abrirDetalhes = async (event) => {
         btnCandidatar.textContent = 'Candidatar-se';
         btnCandidatar.setAttribute('onclick', 'candidatarVaga()');
         divBtn.append(btnVoltar, btnCandidatar);
-        divButtonsTrabalhador.textContent = '';
+        divButtonsTrabalhador.textContent= '';
         divButtonsTrabalhador.appendChild(divBtn);
       }
     }
@@ -582,6 +562,7 @@ const abrirDetalhes = async (event) => {
     const candidaturas = await getCandidaturas();  
 
     vaga.candidatos.forEach( async (candidato) => {
+      console.log(vaga.candidatos);
       let idButton = `btn-reprova-${candidato.id}`
       const spanNome = document.createElement('span');
       const spanDataNacimento = document.createElement('span');
@@ -601,8 +582,7 @@ const abrirDetalhes = async (event) => {
       li.append(spanNome, spanDataNacimento, btnReprovar);
 
       candidaturas.data.forEach( element => {
-        if(element.id == candidato.id) {
-          console.log(element);
+        if(element.idvaga == idDetalhe && element.idcandidato == candidato.id) {
           if(element.reprovado == true) {
             btnReprovar.setAttribute('disabled', '');
             spanNome.setAttribute('class', 'text-danger py-2');
@@ -617,7 +597,6 @@ const abrirDetalhes = async (event) => {
     }
   } catch (error) {
     const msg = 'Erro ao carregar detalhes da vaga';
-    alert(msg);
     console.log(msg, error);
   }
 }
