@@ -455,13 +455,17 @@ const abrirDetalhes = async (event) => {
     const response = await axios.get(`${BASE_URL}/vagas?id=${idDetalhe}`);
     const vaga = response.data[0];
 
+    setTimeout(() => {
+      irPara('vagas', 'detalhe-vagas');
+    }, 500);
+
     console.log(vaga);
 
     const { id, titulo, descricao, remuneracao, candidatos } = vaga;
 
     console.log(id);
 
-    irPara('vagas', 'detalhe-vagas');
+    
     
     const spanTituloVaga = document.getElementById('span-titulo-vaga');
     spanTituloVaga.textContent = vaga.titulo;
@@ -485,7 +489,22 @@ const abrirDetalhes = async (event) => {
 
     const divRecrutador = document.getElementById('candidatos-recrutador');
 
+    if(candidatos.length == 0) {
+      const containerTrabalhador = document.getElementById('container-candidatos-trabalhador');
+      const containerRecrutador = document.getElementById('container-candidatos-recrutador');
 
+      containerTrabalhador.textContent = '';
+      containerRecrutador.textContent = '';
+      containerRecrutador.setAttribute('class', 'w-100 p-0 mt-3 bg bg-dark text-white');
+      containerTrabalhador.setAttribute('class', 'w-100 p-0 mt-3 bg bg-dark text-white');
+
+      const h3 = document.createElement('h3');
+      h3.textContent = 'Nenhum candidato cadastrado';
+      h3.setAttribute('class', 'text-center ms-5');
+
+      containerTrabalhador.appendChild(h3);
+      containerRecrutador.appendChild(h3);
+    }
 
     if(USER_LOGADO.tipo == 'trabalhador') {
       divRecrutador.classList.remove('d-flex');
