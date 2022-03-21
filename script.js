@@ -562,7 +562,6 @@ const abrirDetalhes = async (event) => {
     const candidaturas = await getCandidaturas();  
 
     vaga.candidatos.forEach( async (candidato) => {
-      console.log(vaga.candidatos);
       let idButton = `btn-reprova-${candidato.id}`
       const spanNome = document.createElement('span');
       const spanDataNacimento = document.createElement('span');
@@ -700,15 +699,17 @@ const reprovarCandidato = async (event) => {
   const idBtn = event.target.id;
   const idCandidaturaUser = idBtn.split('-')[2];
 
-  const objCandidatura = await axios.get(`${BASE_URL}/candidaturas/${idCandidaturaUser}`);
+  const objCandidatura = await axios.get(`${BASE_URL}/candidaturas?idcandidato=${idCandidaturaUser}&idvaga=${idDetalhe}`);
+
   const objCandidatoAlterado = {
-    idvaga: objCandidatura.data.idvaga,
-    idcandidato: objCandidatura.data.idcandidato,
+    idvaga: objCandidatura.data[0].idvaga,
+    idcandidato: objCandidatura.data[0].idcandidato,
     reprovado: true,
-    id: objCandidatura.data.id
+    id: objCandidatura.data[0].id
   }
 
-  const response = await axios.put(`${BASE_URL}/candidaturas/${idCandidaturaUser}`, objCandidatoAlterado);
+  const response = await axios.put(`${BASE_URL}/candidaturas/${objCandidatura.data[0].id}`, objCandidatoAlterado);
+
   const getCandidato = await getUserById(objCandidatoAlterado.idcandidato);
   
   getCandidato.data.candidaturas.forEach(candidatura => {
